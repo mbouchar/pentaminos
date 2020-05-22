@@ -10,7 +10,8 @@ Pentamino::Pentamino()
     this->setFlag(QGraphicsItem::ItemIsSelectable, true);
     this->setFlag(QGraphicsItem::ItemIsMovable, true);
     this->setFlag(QGraphicsItem::ItemIsFocusable, true);
-    //this->setFlag(QGraphicsItem::ItemClipsToShape, true);
+    this->setFlag(QGraphicsItem::ItemClipsToShape, true);
+    this->setBoundingRegionGranularity(1);
 
     this->currentAngle = 0;
 }
@@ -26,6 +27,15 @@ void Pentamino::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
     QTransform transform;
     this->setTransform(transform.rotate(this->currentAngle, Qt::ZAxis));
+}
+
+void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(painter);
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    // Left empty to remove the border when selecting a pentamino
 }
 
 void Pentamino::addRectItem(QRect rect, QBrush brush)

@@ -25,6 +25,7 @@ protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
     void addRectItem(QRect rect, QBrush brush);
     void addTitle(QString title, QColor color = Qt::black);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
 private:
     int currentAngle;
