@@ -1,8 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "pentamino.h"
-#include "grid.h"
+#include "game.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -17,29 +16,15 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    Pentamino* addPentamino(Pentamino *pentamino, QPoint pos);
-    Grid *addGrid(Grid *grid, QPoint pos);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
 
-    Pentamino *pentamino1;
-    Pentamino *pentamino2;
-    Pentamino *pentamino3;
-    Pentamino *pentamino4;
-    Pentamino *pentamino5;
-    Pentamino *pentamino6;
-    Pentamino *pentamino7;
-    Pentamino *pentamino8;
-    Pentamino *pentamino9;
-    Pentamino *pentamino10;
-    Pentamino *pentamino11;
-    Pentamino *pentamino12;
+    static int gridSize;
+    static int scale;
 
-    Grid *grid4;
-    Grid *grid5;
-    Grid *grid12;
+    Game *game;
 };
 #endif // MAINWINDOW_H

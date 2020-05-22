@@ -16,15 +16,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    game.cpp \
     grid.cpp \
     main.cpp \
     mainwindow.cpp \
-    pentamino.cpp
+    pentamino.cpp \
+    scene.cpp
 
 HEADERS += \
+    game.h \
     grid.h \
     mainwindow.h \
-    pentamino.h
+    pentamino.h \
+    scene.h
 
 FORMS += \
     mainwindow.ui

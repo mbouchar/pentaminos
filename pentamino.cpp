@@ -4,14 +4,19 @@
 #include <QBrush>
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
+#include <QGraphicsScene>
 
 Pentamino::Pentamino()
 {
+    // Enable selection of the item group
     this->setFlag(QGraphicsItem::ItemIsSelectable, true);
     this->setFlag(QGraphicsItem::ItemIsMovable, true);
     this->setFlag(QGraphicsItem::ItemIsFocusable, true);
+    // Drawing could not be drawed outside shape
     this->setFlag(QGraphicsItem::ItemClipsToShape, true);
     this->setBoundingRegionGranularity(1);
+    // Enable sending position changed events
+    this->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
 
     this->currentAngle = 0;
 }
@@ -36,6 +41,29 @@ void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(widget);
 
     // Left empty to remove the border when selecting a pentamino
+}
+
+QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionChange && scene()) {
+        // value is the new position.
+        QPointF newPos = value.toPointF();
+        QRectF rect = this->scene()->sceneRect();
+        if (!rect.contains(newPos)) {
+            // Keep the item inside the scene rect.
+            newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
+            newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
+            return newPos;
+        }
+
+        // Snap to grid
+        int gridSize = 10;//customScene->getGridSize();
+        qreal xV = qRound(newPos.x() / gridSize) * gridSize;
+        qreal yV = qRound(newPos.y() / gridSize) * gridSize;
+        return QPointF(xV, yV);
+    }
+    else
+        return QGraphicsItem::itemChange(change, value);
 }
 
 void Pentamino::addRectItem(QRect rect, QBrush brush)

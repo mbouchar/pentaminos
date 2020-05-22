@@ -1,19 +1,26 @@
 #include "grid.h"
 
 #include <QFont>
+#include <QPen>
 
 Grid::Grid(QSize size, QString title)
 {
+    QPen pen(Qt::gray);
+
     QGraphicsRectItem *item = new QGraphicsRectItem(0, 0, size.width() * 10, size.height() * 10);
+    item->setPen(pen);
+
     this->addToGroup(item);
     // Draw horizontal lines
     for (int i = 1; i < size.height(); i++) {
         QGraphicsLineItem *line = new QGraphicsLineItem(0, i * 10, size.width() * 10, i * 10);
+        line->setPen(pen);
         this->addToGroup(line);
     }
     // Draw vertical lines
     for (int i = 1; i < size.width(); i++) {
         QGraphicsLineItem *line = new QGraphicsLineItem(i * 10, 0, i * 10, size.height() * 10);
+        line->setPen(pen);
         this->addToGroup(line);
     }
 

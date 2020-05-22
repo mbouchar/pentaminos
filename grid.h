@@ -4,7 +4,6 @@
 #include <QGraphicsItemGroup>
 #include <QSize>
 
-
 class Grid : public QGraphicsItemGroup
 {
 public:
