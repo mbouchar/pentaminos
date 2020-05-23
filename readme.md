@@ -2,4 +2,4 @@
 
 Relever les défis Pentanimos
 
-![Fenêtre principale](doc/MainWindow.cpp)
+![Fenêtre principale](doc/MainWindow.png)
