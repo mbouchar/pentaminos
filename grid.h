@@ -7,7 +7,7 @@
 class Grid : public QGraphicsItemGroup
 {
 public:
-    Grid(QSize size, QString title);
+    Grid(QSize size);
 
     static Grid* grid4();
     static Grid* grid5();

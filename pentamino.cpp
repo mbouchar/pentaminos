@@ -48,18 +48,20 @@ QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
     if (change == ItemPositionChange && scene()) {
         // value is the new position.
         QPointF newPos = value.toPointF();
+
+        // Check if the pentamino will be out of bounds
         QRectF rect = this->scene()->sceneRect();
         if (!rect.contains(newPos)) {
             // Keep the item inside the scene rect.
             newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
             newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
-            return newPos;
         }
 
         // Snap to grid
         int gridSize = 10;//customScene->getGridSize();
         qreal xV = qRound(newPos.x() / gridSize) * gridSize;
         qreal yV = qRound(newPos.y() / gridSize) * gridSize;
+
         return QPointF(xV, yV);
     }
     else

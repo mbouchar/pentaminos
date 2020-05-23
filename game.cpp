@@ -22,33 +22,59 @@ Game::Game(QGraphicsScene *scene)
     this->pentamino10 = this->addPentamino(Pentamino::pentamino10());
     this->pentamino11 = this->addPentamino(Pentamino::pentamino11());
     this->pentamino12 = this->addPentamino(Pentamino::pentamino12());
+
+    // Add text
+    QFont font;
+    font.setPointSize(5);
+    this->titleItem = this->scene->addText("", font);
+
+    this->showDefaultText();
+}
+
+void Game::showDefaultText()
+{
+    this->titleItem->setPlainText("Sélectionnez un pentanimo");
+    this->titleItem->setPos(-40, 0);
 }
 
 void Game::resetGame()
 {
+    QTransform transform;
     this->pentamino1->setPos(QPoint(-140, -110));
+    this->pentamino1->setTransform(transform.rotate(0));
     this->pentamino1->hide();
     this->pentamino2->setPos(QPoint(-120, -110));
+    this->pentamino2->setTransform(transform.rotate(0));
     this->pentamino2->hide();
     this->pentamino3->setPos(QPoint(-80, -110));
+    this->pentamino3->setTransform(transform.rotate(0));
     this->pentamino3->hide();
     this->pentamino4->setPos(QPoint(-50, -110));
+    this->pentamino4->setTransform(transform.rotate(0));
     this->pentamino4->hide();
     this->pentamino5->setPos(QPoint(-10, -110));
+    this->pentamino5->setTransform(transform.rotate(0));
     this->pentamino5->hide();
     this->pentamino6->setPos(QPoint(10, -110));
+    this->pentamino6->setTransform(transform.rotate(0));
     this->pentamino6->hide();
     this->pentamino7->setPos(QPoint(50, -110));
+    this->pentamino7->setTransform(transform.rotate(0));
     this->pentamino7->hide();
     this->pentamino8->setPos(QPoint(80, -110));
+    this->pentamino8->setTransform(transform.rotate(0));
     this->pentamino8->hide();
     this->pentamino9->setPos(QPoint(120, -110));
+    this->pentamino9->setTransform(transform.rotate(0));
     this->pentamino9->hide();
     this->pentamino10->setPos(QPoint(-130, -60));
+    this->pentamino10->setTransform(transform.rotate(0));
     this->pentamino10->hide();
     this->pentamino11->setPos(QPoint(-90, -60));
+    this->pentamino11->setTransform(transform.rotate(0));
     this->pentamino11->hide();
     this->pentamino12->setPos(QPoint(-50, -60));
+    this->pentamino12->setTransform(transform.rotate(0));
     this->pentamino12->hide();
 
     this->grid4->setPos(QPoint(-5, -5));
@@ -57,6 +83,8 @@ void Game::resetGame()
     this->grid5->hide();
     this->grid12->setPos(QPoint(-5, -5));
     this->grid12->hide();
+
+    this->showDefaultText();
 }
 
 Pentamino* Game::addPentamino(Pentamino* pentamino, QPoint pos)
@@ -86,6 +114,9 @@ void Game::startPentamino4A()
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino8->show();
+
+    this->titleItem->setPlainText("Pentanimo 4A");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4B()
@@ -96,6 +127,9 @@ void Game::startPentamino4B()
     this->pentamino3->show();
     this->pentamino7->show();
     this->pentamino9->show();
+
+    this->titleItem->setPlainText("Pentanimo 4B");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4C()
@@ -106,6 +140,9 @@ void Game::startPentamino4C()
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino6->show();
+
+    this->titleItem->setPlainText("Pentanimo 4C");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4D()
@@ -116,6 +153,9 @@ void Game::startPentamino4D()
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
+
+    this->titleItem->setPlainText("Pentanimo 4D");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4E()
@@ -126,6 +166,9 @@ void Game::startPentamino4E()
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino8->show();
+
+    this->titleItem->setPlainText("Pentanimo 4E");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4F()
@@ -136,6 +179,9 @@ void Game::startPentamino4F()
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
+
+    this->titleItem->setPlainText("Pentanimo 4F");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4G()
@@ -146,6 +192,9 @@ void Game::startPentamino4G()
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino11->show();
+
+    this->titleItem->setPlainText("Pentanimo 4G");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4H()
@@ -156,6 +205,9 @@ void Game::startPentamino4H()
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino10->show();
+
+    this->titleItem->setPlainText("Pentanimo 4H");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4I()
@@ -166,6 +218,9 @@ void Game::startPentamino4I()
     this->pentamino5->show();
     this->pentamino6->show();
     this->pentamino8->show();
+
+    this->titleItem->setPlainText("Pentanimo 4I");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4J()
@@ -176,6 +231,9 @@ void Game::startPentamino4J()
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino10->show();
+
+    this->titleItem->setPlainText("Pentanimo 4J");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4K()
@@ -186,6 +244,9 @@ void Game::startPentamino4K()
     this->pentamino4->show();
     this->pentamino6->show();
     this->pentamino7->show();
+
+    this->titleItem->setPlainText("Pentanimo 4K");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino4L()
@@ -196,6 +257,9 @@ void Game::startPentamino4L()
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino7->show();
+
+    this->titleItem->setPlainText("Pentanimo 4L");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5A()
@@ -207,6 +271,9 @@ void Game::startPentamino5A()
     this->pentamino5->show();
     this->pentamino7->show();
     this->pentamino8->show();
+
+    this->titleItem->setPlainText("Pentanimo 5A");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5B()
@@ -218,6 +285,9 @@ void Game::startPentamino5B()
     this->pentamino7->show();
     this->pentamino8->show();
     this->pentamino9->show();
+
+    this->titleItem->setPlainText("Pentanimo 5B");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5C()
@@ -229,6 +299,9 @@ void Game::startPentamino5C()
     this->pentamino5->show();
     this->pentamino6->show();
     this->pentamino9->show();
+
+    this->titleItem->setPlainText("Pentanimo 5C");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5D()
@@ -240,6 +313,9 @@ void Game::startPentamino5D()
     this->pentamino7->show();
     this->pentamino9->show();
     this->pentamino10->show();
+
+    this->titleItem->setPlainText("Pentanimo 5D");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5E()
@@ -251,6 +327,9 @@ void Game::startPentamino5E()
     this->pentamino6->show();
     this->pentamino8->show();
     this->pentamino11->show();
+
+    this->titleItem->setPlainText("Pentanimo 5E");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5F()
@@ -262,6 +341,9 @@ void Game::startPentamino5F()
     this->pentamino7->show();
     this->pentamino9->show();
     this->pentamino12->show();
+
+    this->titleItem->setPlainText("Pentanimo 5F");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5G()
@@ -273,6 +355,9 @@ void Game::startPentamino5G()
     this->pentamino4->show();
     this->pentamino6->show();
     this->pentamino11->show();
+
+    this->titleItem->setPlainText("Pentanimo 5G");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino5H()
@@ -284,6 +369,9 @@ void Game::startPentamino5H()
     this->pentamino5->show();
     this->pentamino9->show();
     this->pentamino10->show();
+
+    this->titleItem->setPlainText("Pentanimo 5H");
+    this->titleItem->setPos(-10, 45);
 }
 
 void Game::startPentamino12()
@@ -302,4 +390,7 @@ void Game::startPentamino12()
     this->pentamino10->show();
     this->pentamino11->show();
     this->pentamino12->show();
+
+    this->titleItem->setPlainText("Pentanimo 12");
+    this->titleItem->setPos(-10, 45);
 }

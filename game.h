@@ -44,12 +44,14 @@ public slots:
 
 protected:
     void resetGame();
+    void showDefaultText();
 
 private:
     Pentamino* addPentamino(Pentamino *pentamino, QPoint pos = QPoint(0, 0));
     Grid *addGrid(Grid *grid, QPoint pos = QPoint(0, 0));
 
     QGraphicsScene *scene;
+    QGraphicsTextItem *titleItem;
 
     Pentamino *pentamino1;
     Pentamino *pentamino2;
