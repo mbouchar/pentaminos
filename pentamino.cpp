@@ -60,6 +60,11 @@ void Pentamino::setBrushColor(QColor color)
     }
 }
 
+void Pentamino::setCollisionBrushColor(QColor color)
+{
+    this->collisionBrush = QBrush(color, this->collisionBrushStyle);
+}
+
 void Pentamino::reset()
 {
     this->currentAngle = 0;
@@ -154,6 +159,7 @@ QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
 
         return QPointF(xV, yV);
     } else {
+        // @todo: item rotation changed doesn't work
         if (change == ItemPositionHasChanged || change == ItemRotationHasChanged || change == ItemTransformHasChanged) {
             emit pentaminoMoved();
         }
@@ -362,6 +368,7 @@ Pentamino* Pentamino::pentamino10()
 {
     Pentamino *pentamino = new Pentamino(10);
     pentamino->setBrushColor(QColor(255, 255, 255, 255));
+    pentamino->setCollisionBrushColor(QColor(0, 0, 0, 255));
 
     /* xxx
      *  x

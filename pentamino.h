@@ -44,6 +44,7 @@ protected:
 
     void addRectItem(QRect rect);
     void setBrushColor(QColor color);
+    void setCollisionBrushColor(QColor color);
     void setTitleColor(QColor color);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
