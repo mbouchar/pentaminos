@@ -1,12 +1,16 @@
 #ifndef PENTAMINO_H
 #define PENTAMINO_H
 
-#include <QGraphicsItemGroup>
+#include <QGraphicsObject>
+#include <QPainter>
+#include <QBrush>
 
-class Pentamino : public QGraphicsItemGroup
+class Pentamino : public QGraphicsObject
 {
+    Q_OBJECT
+
 public:
-    Pentamino();
+    enum { Type = UserType + 1001 };
 
     static Pentamino* pentamino1();
     static Pentamino* pentamino2();
@@ -21,15 +25,44 @@ public:
     static Pentamino* pentamino11();
     static Pentamino* pentamino12();
 
+    void reset();
+    void setCollision(bool collided);
+
+    void setPos(const QPointF &pos);
+    QPainterPath shape() const override;
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    int type() const override;
+
+signals:
+    void pentaminoMoved();
+
 protected:
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-    void addRectItem(QRect rect, QBrush brush);
+    Pentamino();
+
+    void addRectItem(QRect rect);
     void addTitle(QString title, QColor color = Qt::black);
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void setBrushColor(QColor color);
+
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 private:
+    static Qt::BrushStyle collisionBrushStyle;
+    static Qt::BrushStyle normalBrushStyle;
+
+    QBrush *currentBrush;
+    QBrush normalBrush;
+    QBrush collisionBrush;
+
     int currentAngle;
+    QPainterPath path;
+    QPainterPath shapePath;
+
+    QString title;
+    QColor titleColor;
 };
 
 #endif // PENTAMINO_H

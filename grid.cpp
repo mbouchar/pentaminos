@@ -5,24 +5,38 @@
 
 Grid::Grid(QSize size)
 {
-    QPen pen(Qt::gray);
+    this->size = size;
+}
 
-    QGraphicsRectItem *item = new QGraphicsRectItem(0, 0, size.width() * 10, size.height() * 10);
-    item->setPen(pen);
+void Grid::setPos(QPoint pos)
+{
+    this->position = pos;
+}
 
-    this->addToGroup(item);
+QPoint Grid::pos()
+{
+    return this->position;
+}
+
+void Grid::draw(QPainter *painter, QPen pen)
+{
+    // Draw rectangle
+    painter->setPen(pen);
+    painter->drawRect(this->position.x(), this->position.y(), this->size.width() * 10, this->size.height() * 10);
+
     // Draw horizontal lines
     for (int i = 1; i < size.height(); i++) {
-        QGraphicsLineItem *line = new QGraphicsLineItem(0, i * 10, size.width() * 10, i * 10);
-        line->setPen(pen);
-        this->addToGroup(line);
+        painter->drawLine(this->position.x(), this->position.y() + i * 10, this->position.x() + size.width() * 10, this->position.y() + i * 10);
     }
     // Draw vertical lines
     for (int i = 1; i < size.width(); i++) {
-        QGraphicsLineItem *line = new QGraphicsLineItem(i * 10, 0, i * 10, size.height() * 10);
-        line->setPen(pen);
-        this->addToGroup(line);
+        painter->drawLine(this->position.x() + i * 10, this->position.y(), this->position.x() + i * 10, this->position.y() + size.height() * 10);
     }
+}
+
+QSize Grid::getSize()
+{
+    return this->size;
 }
 
 Grid* Grid::grid4()

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "game.h"
+#include "scene.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -18,9 +19,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void gameWon();
+
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
+    Scene *scene;
 
     static int gridSize;
     static int scale;

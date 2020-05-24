@@ -5,16 +5,18 @@
 #include "grid.h"
 
 #include <QObject>
-#include <QGraphicsScene>
 
+class Scene;
 class Game : public QObject
 {
     Q_OBJECT
 
 public:
-    Game(QGraphicsScene *scene);
+    Game(Scene *scene);
 
 public slots:
+    Grid* getActiveGrid();
+
     // Pentaminos 4
     void startPentamino4A();
     void startPentamino4B();
@@ -42,6 +44,15 @@ public slots:
     // Pentamino 12
     void startPentamino12();
 
+    // Game title
+    QString getTitle();
+
+    // Check if game is won
+    void checkStatus();
+
+signals:
+    void gameWon();
+
 protected:
     void resetGame();
     void showDefaultText();
@@ -50,8 +61,10 @@ private:
     Pentamino* addPentamino(Pentamino *pentamino, QPoint pos = QPoint(0, 0));
     Grid *addGrid(Grid *grid, QPoint pos = QPoint(0, 0));
 
-    QGraphicsScene *scene;
-    QGraphicsTextItem *titleItem;
+    Scene *scene;
+    QString title;
+
+    QList<Pentamino*> pentaminos;
 
     Pentamino *pentamino1;
     Pentamino *pentamino2;
@@ -69,6 +82,8 @@ private:
     Grid *grid4;
     Grid *grid5;
     Grid *grid12;
+
+    Grid *activeGrid;
 };
 
 #endif // GAME_H

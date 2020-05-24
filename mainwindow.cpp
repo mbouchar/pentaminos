@@ -1,5 +1,6 @@
 #include <QPushButton>
 #include <QSizePolicy>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -7,6 +8,7 @@
 #include "scene.h"
 
 int MainWindow::gridSize = 10;
+// Scale 2x
 int MainWindow::scale = 2;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,10 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     int sceneHeight = this->ui->graphicsView->rect().height();
 
     this->scene = new Scene(QRect(-(sceneWidth / 2) / this->scale, -(sceneHeight / 2) / this->scale, sceneWidth / this->scale, (sceneWidth - 50) / this->scale), this->gridSize, this);
-    this->scene->setBackgroundBrush(Qt::white);
     this->ui->graphicsView->setScene(this->scene);
 
-    // Scale 2x
+    // Scale the view
     QTransform transform;
     this->ui->graphicsView->setTransform(transform.scale(this->scale, this->scale));
     this->ui->graphicsView->centerOn(0, 0);
@@ -63,6 +64,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Pentamino 12
     connect(this->ui->pentamino12, SIGNAL(clicked()), this->game, SLOT(startPentamino12()));
+
+    // Detect winning games
+    connect(this->game, SIGNAL(gameWon()), this, SLOT(gameWon()));
+}
+
+void MainWindow::gameWon()
+{
+    // @todo: save status
+    QMessageBox::information(this, "Fin de la partie", "La partie a été gagnée", QMessageBox::Ok);
 }
 
 MainWindow::~MainWindow()

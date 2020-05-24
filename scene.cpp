@@ -6,6 +6,14 @@ Scene::Scene(const QRectF &sceneRect, int gridSize, QObject *parent) :
     QGraphicsScene(sceneRect, parent)
 {
     Q_ASSERT(gridSize > 0);
+    this->game = nullptr;
+
+    this->setBackgroundBrush(Qt::white);
+}
+
+void Scene::setGame(Game *game)
+{
+    this->game = game;
 }
 
 int Scene::getGridSize() const
@@ -15,20 +23,26 @@ int Scene::getGridSize() const
 
 void Scene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-/*    QPen pen;
-    painter->setPen(pen);
+    Q_UNUSED(rect);
 
-    qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
-    qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
-    QVector<QPointF> points;
-    for (qreal x = left; x < rect.right(); x += gridSize){
-        for (qreal y = top; y < rect.bottom(); y += gridSize){
-            points.append(QPointF(x,y));
+    QPen pen(Qt::gray);
+
+    if (this->game != nullptr)
+    {
+        Grid *grid = this->game->getActiveGrid();
+        if (grid != nullptr)
+        {
+            grid->draw(painter, pen);
         }
     }
-    painter->drawPoints(points.data(), points.size());*/
 
-    // The bounding rect
-    /*painter->drawPoint(QPoint(0,0));
-    painter->drawRect(this->itemsBoundingRect());*/
+    // Draw title
+    QString title = this->game->getTitle();
+    if (!title.isEmpty()) {
+        QFont font = painter->font();
+        font.setPointSize(5);
+        painter->setFont(font);
+        painter->setPen(pen);
+        painter->drawText(QRect(-50, 50, 100, 10), Qt::AlignCenter, title);
+    }
 }
