@@ -1,0 +1,10 @@
+qmake
+make
+
+./bin/Pentanimos
+
+sudo make install
+/opt/Pentanimos/bin/Pentanimos
+
+sudo make uninstall
+make distclean

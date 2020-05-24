@@ -1,0 +1,7 @@
+1.0.0 (May 24 2020)
+
+ * Initial version
+ * Base ui with all pentaminoes games
+ * Progress saving and loading
+ * Collision detection
+ * Basic debian package
