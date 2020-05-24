@@ -40,7 +40,7 @@ signals:
     void pentaminoMoved();
 
 protected:
-    Pentamino(int id);
+    Pentamino(int id, QColor brushColor);
 
     void addRectItem(QRect rect);
     void setBrushColor(QColor color);

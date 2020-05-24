@@ -9,7 +9,7 @@
 Qt::BrushStyle Pentamino::collisionBrushStyle = Qt::DiagCrossPattern;
 Qt::BrushStyle Pentamino::normalBrushStyle = Qt::SolidPattern;
 
-Pentamino::Pentamino(int id)
+Pentamino::Pentamino(int id, QColor brushColor)
 {
     this->pentaminoId = id;
 
@@ -27,6 +27,8 @@ Pentamino::Pentamino(int id)
     this->currentAngle = 0;
     this->currentBrush = nullptr;
     this->titleColor = Qt::black;
+
+    this->setBrushColor(brushColor);
 }
 
 int Pentamino::id()
@@ -54,8 +56,9 @@ QPainterPath Pentamino::shape() const
 void Pentamino::setBrushColor(QColor color)
 {
     this->normalBrush = QBrush(color, this->normalBrushStyle);
-    this->collisionBrush = QBrush(color, this->collisionBrushStyle);
     if (this->currentBrush == nullptr) {
+        // If it's the first time we set the color, also update the collision brush color
+        this->setCollisionBrushColor(color);
         this->currentBrush = &this->normalBrush;
     }
 }
@@ -183,14 +186,14 @@ void Pentamino::setTitleColor(QColor color)
 
 Pentamino* Pentamino::pentamino1()
 {
+    Pentamino *pentamino = new Pentamino(1, QColor(255, 192, 0, 255));
+
     /* x
      * x
      * x
      * x
      * x
      */
-    Pentamino *pentamino = new Pentamino(1);
-    pentamino->setBrushColor(QColor(255, 192, 0, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
@@ -202,13 +205,13 @@ Pentamino* Pentamino::pentamino1()
 
 Pentamino* Pentamino::pentamino2()
 {
+    Pentamino *pentamino = new Pentamino(2, QColor(237, 125, 49, 255));
+
     /* x
      * x
      * x
      * xx
      */
-    Pentamino *pentamino = new Pentamino(2);
-    pentamino->setBrushColor(QColor(237, 125, 49, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
@@ -221,8 +224,7 @@ Pentamino* Pentamino::pentamino2()
 
 Pentamino* Pentamino::pentamino3()
 {
-    Pentamino *pentamino = new Pentamino(3);
-    pentamino->setBrushColor(QColor(192, 0, 0, 255));
+    Pentamino *pentamino = new Pentamino(3, QColor(192, 0, 0, 255));
     pentamino->setTitleColor(Qt::white);
 
     /*  x
@@ -242,8 +244,7 @@ Pentamino* Pentamino::pentamino3()
 
 Pentamino* Pentamino::pentamino4()
 {
-    Pentamino *pentamino = new Pentamino(4);
-    pentamino->setBrushColor(QColor(112, 48, 160, 255));
+    Pentamino *pentamino = new Pentamino(4, QColor(112, 48, 160, 255));
     pentamino->setTitleColor(Qt::white);
 
     /*  x
@@ -264,8 +265,7 @@ Pentamino* Pentamino::pentamino4()
 
 Pentamino* Pentamino::pentamino5()
 {
-    Pentamino *pentamino = new Pentamino(5);
-    pentamino->setBrushColor(QColor(0, 32, 96, 255));
+    Pentamino *pentamino = new Pentamino(5, QColor(0, 32, 96, 255));
     pentamino->setTitleColor(Qt::white);
 
     /*   x
@@ -285,8 +285,7 @@ Pentamino* Pentamino::pentamino5()
 
 Pentamino* Pentamino::pentamino6()
 {
-    Pentamino *pentamino = new Pentamino(6);
-    pentamino->setBrushColor(QColor(255, 0, 255, 255));
+    Pentamino *pentamino = new Pentamino(6, QColor(255, 0, 255, 255));
 
     /* xx
      * xx
@@ -305,8 +304,7 @@ Pentamino* Pentamino::pentamino6()
 
 Pentamino* Pentamino::pentamino7()
 {
-    Pentamino *pentamino = new Pentamino(7);
-    pentamino->setBrushColor(QColor(255, 255, 153, 255));
+    Pentamino *pentamino = new Pentamino(7, QColor(255, 255, 153, 255));
 
     /* xx
      *  x
@@ -325,8 +323,7 @@ Pentamino* Pentamino::pentamino7()
 
 Pentamino* Pentamino::pentamino8()
 {
-    Pentamino *pentamino = new Pentamino(8);
-    pentamino->setBrushColor(QColor(0, 176, 240, 255));
+    Pentamino *pentamino = new Pentamino(8, QColor(0, 176, 240, 255));
 
     /*  xx
      *  x
@@ -345,8 +342,7 @@ Pentamino* Pentamino::pentamino8()
 
 Pentamino* Pentamino::pentamino9()
 {
-    Pentamino *pentamino = new Pentamino(9);
-    pentamino->setBrushColor(QColor(192, 191, 191, 255));
+    Pentamino *pentamino = new Pentamino(9, QColor(192, 191, 191, 255));
 
     /*  x
      * xxx
@@ -366,8 +362,7 @@ Pentamino* Pentamino::pentamino9()
 
 Pentamino* Pentamino::pentamino10()
 {
-    Pentamino *pentamino = new Pentamino(10);
-    pentamino->setBrushColor(QColor(255, 255, 255, 255));
+    Pentamino *pentamino = new Pentamino(10, QColor(255, 255, 255, 255));
     pentamino->setCollisionBrushColor(QColor(0, 0, 0, 255));
 
     /* xxx
@@ -387,8 +382,7 @@ Pentamino* Pentamino::pentamino10()
 
 Pentamino* Pentamino::pentamino11()
 {
-    Pentamino *pentamino = new Pentamino(11);
-    pentamino->setBrushColor(QColor(146, 208, 80, 255));
+    Pentamino *pentamino = new Pentamino(11, QColor(146, 208, 80, 255));
 
     /*   x
      *  xx
@@ -408,8 +402,7 @@ Pentamino* Pentamino::pentamino11()
 
 Pentamino* Pentamino::pentamino12()
 {
-    Pentamino *pentamino = new Pentamino(12);
-    pentamino->setBrushColor(QColor(255, 0, 0, 255));
+    Pentamino *pentamino = new Pentamino(12, QColor(255, 0, 0, 255));
 
     /*  x
      * xxx
