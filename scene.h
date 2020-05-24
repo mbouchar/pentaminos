@@ -8,7 +8,6 @@ class Scene : public QGraphicsScene
 {
 public:
     Scene(const QRectF &sceneRect, int gridSize, QObject *parent = 0);
-    int getGridSize() const;
     void setGame(Game *game);
 
 protected:
@@ -16,7 +15,6 @@ protected:
 
 private:
     Game *game;
-    int gridSize;
 };
 
 #endif // SCENE_H

@@ -9,8 +9,10 @@
 Qt::BrushStyle Pentamino::collisionBrushStyle = Qt::DiagCrossPattern;
 Qt::BrushStyle Pentamino::normalBrushStyle = Qt::SolidPattern;
 
-Pentamino::Pentamino()
+Pentamino::Pentamino(int id)
 {
+    this->pentaminoId = id;
+
     // Enable selection of the item group
     this->setFlag(QGraphicsItem::ItemIsSelectable, true);
     this->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -24,8 +26,12 @@ Pentamino::Pentamino()
 
     this->currentAngle = 0;
     this->currentBrush = nullptr;
-    this->title = "";
     this->titleColor = Qt::black;
+}
+
+int Pentamino::id()
+{
+    return this->pentaminoId;
 }
 
 int Pentamino::type() const
@@ -114,13 +120,11 @@ void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(*this->currentBrush);
     painter->drawPath(this->path);
 
-    if (!this->title.isEmpty()) {
-        QFont font = painter->font();
-        font.setPointSize(5);
-        painter->setFont(font);
-        painter->setPen(this->titleColor);
-        painter->drawText(QRect(-5, -5, 10, 10), Qt::AlignCenter, this->title);
-    }
+    QFont font = painter->font();
+    font.setPointSize(5);
+    painter->setFont(font);
+    painter->setPen(this->titleColor);
+    painter->drawText(QRect(-5, -5, 10, 10), Qt::AlignCenter, QString::number(this->id()));
 }
 
 void Pentamino::setPos(const QPointF &pos)
@@ -166,9 +170,8 @@ void Pentamino::addRectItem(QRect rect)
     this->shapePath.addRect(rect.x() + 1, rect.y() + 1, rect.width() - 2, rect.height() - 2);
 }
 
-void Pentamino::addTitle(QString title, QColor color)
+void Pentamino::setTitleColor(QColor color)
 {
-    this->title = title;
     this->titleColor = color;
 }
 
@@ -180,14 +183,13 @@ Pentamino* Pentamino::pentamino1()
      * x
      * x
      */
-    Pentamino *pentamino = new Pentamino();
+    Pentamino *pentamino = new Pentamino(1);
     pentamino->setBrushColor(QColor(255, 192, 0, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
     pentamino->addRectItem(QRect(-5, 15, 10, 10));
-    pentamino->addTitle("1");
 
     return pentamino;
 }
@@ -199,7 +201,7 @@ Pentamino* Pentamino::pentamino2()
      * x
      * xx
      */
-    Pentamino *pentamino = new Pentamino();
+    Pentamino *pentamino = new Pentamino(2);
     pentamino->setBrushColor(QColor(237, 125, 49, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
@@ -207,40 +209,42 @@ Pentamino* Pentamino::pentamino2()
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
     // Right of the last one
     pentamino->addRectItem(QRect(5, 5, 10, 10));
-    pentamino->addTitle("2");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino3()
 {
+    Pentamino *pentamino = new Pentamino(3);
+    pentamino->setBrushColor(QColor(192, 0, 0, 255));
+    pentamino->setTitleColor(Qt::white);
+
     /*  x
      *  x
      * xx
      *  x
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(192, 0, 0, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
     // Left of the third one
     pentamino->addRectItem(QRect(-15, -5, 10, 10));
-    pentamino->addTitle("3", Qt::white);
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino4()
 {
+    Pentamino *pentamino = new Pentamino(4);
+    pentamino->setBrushColor(QColor(112, 48, 160, 255));
+    pentamino->setTitleColor(Qt::white);
+
     /*  x
      *  x
      * xx
      * x
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(112, 48, 160, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
@@ -248,19 +252,20 @@ Pentamino* Pentamino::pentamino4()
     pentamino->addRectItem(QRect(-15, -5, 10, 10));
     // Below the last one
     pentamino->addRectItem(QRect(-15, 5, 10, 10));
-    pentamino->addTitle("4", Qt::white);
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino5()
 {
+    Pentamino *pentamino = new Pentamino(5);
+    pentamino->setBrushColor(QColor(0, 32, 96, 255));
+    pentamino->setTitleColor(Qt::white);
+
     /*   x
      *   x
      * xxx
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(0, 32, 96, 255));
     pentamino->addRectItem(QRect(-5, -25, 10, 10));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
@@ -268,19 +273,19 @@ Pentamino* Pentamino::pentamino5()
     pentamino->addRectItem(QRect(-15, -5, 10, 10));
     // Left of the last one
     pentamino->addRectItem(QRect(-25, -5, 10, 10));
-    pentamino->addTitle("5", Qt::white);
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino6()
 {
+    Pentamino *pentamino = new Pentamino(6);
+    pentamino->setBrushColor(QColor(255, 0, 255, 255));
+
     /* xx
      * xx
      * x
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(255, 0, 255, 255));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
@@ -288,19 +293,19 @@ Pentamino* Pentamino::pentamino6()
     pentamino->addRectItem(QRect(5, -15, 10, 10));
     // Below the last one
     pentamino->addRectItem(QRect(5, -5, 10, 10));
-    pentamino->addTitle("6");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino7()
 {
+    Pentamino *pentamino = new Pentamino(7);
+    pentamino->setBrushColor(QColor(255, 255, 153, 255));
+
     /* xx
      *  x
      * xx
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(255, 255, 153, 255));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
@@ -308,19 +313,19 @@ Pentamino* Pentamino::pentamino7()
     pentamino->addRectItem(QRect(-15, -15, 10, 10));
     // Left of the third one
     pentamino->addRectItem(QRect(-15, 5, 10, 10));
-    pentamino->addTitle("7");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino8()
 {
+    Pentamino *pentamino = new Pentamino(8);
+    pentamino->setBrushColor(QColor(0, 176, 240, 255));
+
     /*  xx
      *  x
      * xx
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(0, 176, 240, 255));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
@@ -328,19 +333,19 @@ Pentamino* Pentamino::pentamino8()
     pentamino->addRectItem(QRect(5, -15, 10, 10));
     // Left of the third one
     pentamino->addRectItem(QRect(-15, 5, 10, 10));
-    pentamino->addTitle("8");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino9()
 {
+    Pentamino *pentamino = new Pentamino(9);
+    pentamino->setBrushColor(QColor(192, 191, 191, 255));
+
     /*  x
      * xxx
      * x
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(192, 191, 191, 255));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     // Right of the second one
@@ -349,19 +354,19 @@ Pentamino* Pentamino::pentamino9()
     pentamino->addRectItem(QRect(-15, -5, 10, 10));
     // Below the last one
     pentamino->addRectItem(QRect(-15, 5, 10, 10));
-    pentamino->addTitle("9");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino10()
 {
+    Pentamino *pentamino = new Pentamino(10);
+    pentamino->setBrushColor(QColor(255, 255, 255, 255));
+
     /* xxx
      *  x
      *  x
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(255, 255, 255, 255));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
@@ -369,19 +374,19 @@ Pentamino* Pentamino::pentamino10()
     pentamino->addRectItem(QRect(-15, -15, 10, 10));
     // Right of the first one
     pentamino->addRectItem(QRect(5, -15, 10, 10));
-    pentamino->addTitle("10");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino11()
 {
+    Pentamino *pentamino = new Pentamino(11);
+    pentamino->setBrushColor(QColor(146, 208, 80, 255));
+
     /*   x
      *  xx
      * xx
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(146, 208, 80, 255));
     pentamino->addRectItem(QRect(5, -15, 10, 10));
     pentamino->addRectItem(QRect(5, -5, 10, 10));
     // Left of the second one
@@ -390,19 +395,19 @@ Pentamino* Pentamino::pentamino11()
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
     // Left of the last one
     pentamino->addRectItem(QRect(-15, 5, 10, 10));
-    pentamino->addTitle("11");
 
     return pentamino;
 }
 
 Pentamino* Pentamino::pentamino12()
 {
+    Pentamino *pentamino = new Pentamino(12);
+    pentamino->setBrushColor(QColor(255, 0, 0, 255));
+
     /*  x
      * xxx
      *  x
      */
-    Pentamino *pentamino = new Pentamino();
-    pentamino->setBrushColor(QColor(255, 0, 0, 255));
     pentamino->addRectItem(QRect(-5, -15, 10, 10));
     pentamino->addRectItem(QRect(-5, -5, 10, 10));
     pentamino->addRectItem(QRect(-5, 5, 10, 10));
@@ -410,7 +415,6 @@ Pentamino* Pentamino::pentamino12()
     pentamino->addRectItem(QRect(-15, -5, 10, 10));
     // Right of the second one
     pentamino->addRectItem(QRect(5, -5, 10, 10));
-    pentamino->addTitle("12");
 
     return pentamino;
 }

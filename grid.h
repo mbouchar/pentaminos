@@ -10,7 +10,7 @@ class Grid : public QObject
 public:
     Grid(QSize size);
 
-    QSize getSize();
+    QSize size();
     void setPos(QPoint pos);
     QPoint pos();
     void draw(QPainter *painter, QPen pen);
@@ -20,7 +20,7 @@ public:
     static Grid* grid12();
 
 private:
-    QSize size;
+    QSize gridSize;
     QPoint position;
 };
 

@@ -12,10 +12,36 @@ class Game : public QObject
     Q_OBJECT
 
 public:
+    enum GameId {
+        // Pentamino 4
+        Pentamino4A, Pentamino4B, Pentamino4C,
+        Pentamino4D, Pentamino4E, Pentamino4F,
+        Pentamino4G, Pentamino4H, Pentamino4I,
+        Pentamino4J, Pentamino4K, Pentamino4L,
+        // Pentamino 5
+        Pentamino5A, Pentamino5B, Pentamino5C,
+        Pentamino5D, Pentamino5E, Pentamino5F,
+        Pentamino5G, Pentamino5H,
+        // Pentamino 12
+        Pentamino12
+    };
     Game(Scene *scene);
 
+    QString title();
+    Grid* activeGrid();
+
 public slots:
-    Grid* getActiveGrid();
+    void startGame(GameId gameId);
+
+    // Check if game is won
+    void checkStatus();
+
+signals:
+    void gameWon();
+
+protected:
+    void resetGame();
+    void showDefaultText();
 
     // Pentaminos 4
     void startPentamino4A();
@@ -44,25 +70,12 @@ public slots:
     // Pentamino 12
     void startPentamino12();
 
-    // Game title
-    QString getTitle();
-
-    // Check if game is won
-    void checkStatus();
-
-signals:
-    void gameWon();
-
-protected:
-    void resetGame();
-    void showDefaultText();
-
 private:
     Pentamino* addPentamino(Pentamino *pentamino, QPoint pos = QPoint(0, 0));
     Grid *addGrid(Grid *grid, QPoint pos = QPoint(0, 0));
 
     Scene *scene;
-    QString title;
+    QString gameTitle;
 
     QList<Pentamino*> pentaminos;
 
@@ -83,7 +96,7 @@ private:
     Grid *grid5;
     Grid *grid12;
 
-    Grid *activeGrid;
+    Grid *gameActiveGrid;
 };
 
 #endif // GAME_H

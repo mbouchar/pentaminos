@@ -30,21 +30,21 @@ Game::Game(Scene *scene)
     this->pentamino11 = this->addPentamino(Pentamino::pentamino11());
     this->pentamino12 = this->addPentamino(Pentamino::pentamino12());
 
-    this->activeGrid = nullptr;
+    this->gameActiveGrid = nullptr;
 
     foreach(Pentamino *pentamino, this->pentaminos) {
         connect(pentamino, SIGNAL(pentaminoMoved()), this, SLOT(checkStatus()));
     }
 }
 
-QString Game::getTitle()
+QString Game::title()
 {
-    return this->title;
+    return this->gameTitle;
 }
 
-Grid* Game::getActiveGrid()
+Grid* Game::activeGrid()
 {
-    return this->activeGrid;
+    return this->gameActiveGrid;
 }
 
 void Game::checkStatus()
@@ -81,12 +81,12 @@ void Game::checkStatus()
     }
 
     // Detect if the game has been won
-    if (!collisionDetected && this->activeGrid != nullptr)
+    if (!collisionDetected && this->activeGrid() != nullptr)
     {
-        int gridWith = this->activeGrid->getSize().width();
-        int gridHeight = this->activeGrid->getSize().height();
+        int gridWith = this->activeGrid()->size().width();
+        int gridHeight = this->activeGrid()->size().height();
 
-        QPoint gridPos = this->activeGrid->pos();
+        QPoint gridPos = this->activeGrid()->pos();
         QTransform transform;
 
         for (int x = 0; x < gridWith; x++)
@@ -111,7 +111,7 @@ void Game::checkStatus()
 
 void Game::showDefaultText()
 {
-    this->title = "Sélectionnez un pentanimo";
+    this->gameTitle = "Sélectionnez un pentanimo";
 }
 
 void Game::resetGame()
@@ -161,258 +161,327 @@ Grid* Game::addGrid(Grid *grid, QPoint pos)
     return grid;
 }
 
+void Game::startGame(GameId gameId)
+{
+    switch (gameId) {
+        case Pentamino4A:
+            startPentamino4A();
+            break;
+        case Pentamino4B:
+            startPentamino4B();
+            break;
+        case Pentamino4C:
+            startPentamino4C();
+            break;
+        case Pentamino4D:
+            startPentamino4D();
+            break;
+        case Pentamino4E:
+            startPentamino4E();
+            break;
+        case Pentamino4F:
+            startPentamino4F();
+            break;
+        case Pentamino4G:
+            startPentamino4G();
+            break;
+        case Pentamino4H:
+            startPentamino4H();
+            break;
+        case Pentamino4I:
+            startPentamino4I();
+            break;
+        case Pentamino4J:
+            startPentamino4J();
+            break;
+        case Pentamino4K:
+            startPentamino4K();
+            break;
+        case Pentamino4L:
+            startPentamino4L();
+            break;
+        case Pentamino5A:
+            startPentamino5A();
+            break;
+        case Pentamino5B:
+            startPentamino5B();
+            break;
+        case Pentamino5C:
+            startPentamino5C();
+            break;
+        case Pentamino5D:
+            startPentamino5D();
+            break;
+        case Pentamino5E:
+            startPentamino5E();
+            break;
+        case Pentamino5F:
+            startPentamino5F();
+            break;
+        case Pentamino5G:
+            startPentamino5G();
+            break;
+        case Pentamino5H:
+            startPentamino5H();
+            break;
+        case Pentamino12:
+            startPentamino12();
+            break;
+    }
+}
+
 void Game::startPentamino4A()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino8->show();
 
-    this->title = "Pentanimo 4A";
+    this->gameTitle = "Pentanimo 4A";
 }
 
 void Game::startPentamino4B()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino7->show();
     this->pentamino9->show();
 
-    this->title = "Pentanimo 4B";
+    this->gameTitle = "Pentanimo 4B";
 }
 
 void Game::startPentamino4C()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino6->show();
 
-    this->title = "Pentanimo 4C";
+    this->gameTitle = "Pentanimo 4C";
 }
 
 void Game::startPentamino4D()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
 
-    this->title = "Pentanimo 4D";
+    this->gameTitle = "Pentanimo 4D";
 }
 
 void Game::startPentamino4E()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino8->show();
 
-    this->title = "Pentanimo 4E";
+    this->gameTitle = "Pentanimo 4E";
 }
 
 void Game::startPentamino4F()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
 
-    this->title = "Pentanimo 4F";
+    this->gameTitle = "Pentanimo 4F";
 }
 
 void Game::startPentamino4G()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino11->show();
 
-    this->title = "Pentanimo 4G";
+    this->gameTitle = "Pentanimo 4G";
 }
 
 void Game::startPentamino4H()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino10->show();
 
-    this->title = "Pentanimo 4H";
+    this->gameTitle = "Pentanimo 4H";
 }
 
 void Game::startPentamino4I()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino5->show();
     this->pentamino6->show();
     this->pentamino8->show();
 
-    this->title = "Pentanimo 4I";
+    this->gameTitle = "Pentanimo 4I";
 }
 
 void Game::startPentamino4J()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino10->show();
 
-    this->title = "Pentanimo 4J";
+    this->gameTitle = "Pentanimo 4J";
 }
 
 void Game::startPentamino4K()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino6->show();
     this->pentamino7->show();
 
-    this->title = "Pentanimo 4K";
+    this->gameTitle = "Pentanimo 4K";
 }
 
 void Game::startPentamino4L()
 {
     this->resetGame();
-    this->activeGrid = this->grid4;
+    this->gameActiveGrid = this->grid4;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino7->show();
 
-    this->title = "Pentanimo 4L";
+    this->gameTitle = "Pentanimo 4L";
 }
 
 void Game::startPentamino5A()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino2->show();
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino7->show();
     this->pentamino8->show();
 
-    this->title = "Pentanimo 5A";
+    this->gameTitle = "Pentanimo 5A";
 }
 
 void Game::startPentamino5B()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino7->show();
     this->pentamino8->show();
     this->pentamino9->show();
 
-    this->title = "Pentanimo 5B";
+    this->gameTitle = "Pentanimo 5B";
 }
 
 void Game::startPentamino5C()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino6->show();
     this->pentamino9->show();
 
-    this->title = "Pentanimo 5C";
+    this->gameTitle = "Pentanimo 5C";
 }
 
 void Game::startPentamino5D()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
     this->pentamino10->show();
 
-    this->title = "Pentanimo 5D";
+    this->gameTitle = "Pentanimo 5D";
 }
 
 void Game::startPentamino5E()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino8->show();
     this->pentamino11->show();
 
-    this->title = "Pentanimo 5E";
+    this->gameTitle = "Pentanimo 5E";
 }
 
 void Game::startPentamino5F()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino2->show();
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
     this->pentamino12->show();
 
-    this->title = "Pentanimo 5F";
+    this->gameTitle = "Pentanimo 5F";
 }
 
 void Game::startPentamino5G()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino6->show();
     this->pentamino11->show();
 
-    this->title = "Pentanimo 5G";
+    this->gameTitle = "Pentanimo 5G";
 }
 
 void Game::startPentamino5H()
 {
     this->resetGame();
-    this->activeGrid = this->grid5;
+    this->gameActiveGrid = this->grid5;
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino9->show();
     this->pentamino10->show();
 
-    this->title = "Pentanimo 5H";
+    this->gameTitle = "Pentanimo 5H";
 }
 
 void Game::startPentamino12()
 {
     this->resetGame();
-    this->activeGrid = this->grid12;
+    this->gameActiveGrid = this->grid12;
     this->pentamino1->show();
     this->pentamino2->show();
     this->pentamino3->show();
@@ -426,5 +495,5 @@ void Game::startPentamino12()
     this->pentamino11->show();
     this->pentamino12->show();
 
-    this->title = "Pentanimo 12";
+    this->gameTitle = "Pentanimo 12";
 }

@@ -17,18 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     game.cpp \
+    gamestatus.cpp \
     grid.cpp \
     main.cpp \
     mainwindow.cpp \
     pentamino.cpp \
-    scene.cpp
+    scene.cpp \
+    settings.cpp
 
 HEADERS += \
     game.h \
+    gamestatus.h \
     grid.h \
     mainwindow.h \
     pentamino.h \
-    scene.h
+    scene.h \
+    settings.h
 
 FORMS += \
     mainwindow.ui

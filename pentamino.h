@@ -12,6 +12,8 @@ class Pentamino : public QGraphicsObject
 public:
     enum { Type = UserType + 1001 };
 
+    int id();
+
     static Pentamino* pentamino1();
     static Pentamino* pentamino2();
     static Pentamino* pentamino3();
@@ -38,11 +40,11 @@ signals:
     void pentaminoMoved();
 
 protected:
-    Pentamino();
+    Pentamino(int id);
 
     void addRectItem(QRect rect);
-    void addTitle(QString title, QColor color = Qt::black);
     void setBrushColor(QColor color);
+    void setTitleColor(QColor color);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -50,6 +52,8 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
 
 private:
+    int pentaminoId;
+
     static Qt::BrushStyle collisionBrushStyle;
     static Qt::BrushStyle normalBrushStyle;
 
@@ -61,7 +65,6 @@ private:
     QPainterPath path;
     QPainterPath shapePath;
 
-    QString title;
     QColor titleColor;
 };
 

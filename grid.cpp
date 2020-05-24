@@ -5,7 +5,7 @@
 
 Grid::Grid(QSize size)
 {
-    this->size = size;
+    this->gridSize = size;
 }
 
 void Grid::setPos(QPoint pos)
@@ -22,21 +22,21 @@ void Grid::draw(QPainter *painter, QPen pen)
 {
     // Draw rectangle
     painter->setPen(pen);
-    painter->drawRect(this->position.x(), this->position.y(), this->size.width() * 10, this->size.height() * 10);
+    painter->drawRect(this->position.x(), this->position.y(), this->size().width() * 10, this->size().height() * 10);
 
     // Draw horizontal lines
-    for (int i = 1; i < size.height(); i++) {
-        painter->drawLine(this->position.x(), this->position.y() + i * 10, this->position.x() + size.width() * 10, this->position.y() + i * 10);
+    for (int i = 1; i < this->size().height(); i++) {
+        painter->drawLine(this->position.x(), this->position.y() + i * 10, this->position.x() + this->size().width() * 10, this->position.y() + i * 10);
     }
     // Draw vertical lines
-    for (int i = 1; i < size.width(); i++) {
-        painter->drawLine(this->position.x() + i * 10, this->position.y(), this->position.x() + i * 10, this->position.y() + size.height() * 10);
+    for (int i = 1; i < this->size().width(); i++) {
+        painter->drawLine(this->position.x() + i * 10, this->position.y(), this->position.x() + i * 10, this->position.y() + this->size().height() * 10);
     }
 }
 
-QSize Grid::getSize()
+QSize Grid::size()
 {
-    return this->size;
+    return this->gridSize;
 }
 
 Grid* Grid::grid4()

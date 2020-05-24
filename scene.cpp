@@ -16,33 +16,26 @@ void Scene::setGame(Game *game)
     this->game = game;
 }
 
-int Scene::getGridSize() const
-{
-    return this->gridSize;
-}
-
 void Scene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-    QPen pen(Qt::gray);
-
     if (this->game != nullptr)
     {
-        Grid *grid = this->game->getActiveGrid();
+        Grid *grid = this->game->activeGrid();
         if (grid != nullptr)
         {
-            grid->draw(painter, pen);
+            grid->draw(painter, QPen(Qt::gray));
         }
     }
 
     // Draw title
-    QString title = this->game->getTitle();
+    QString title = this->game->title();
     if (!title.isEmpty()) {
         QFont font = painter->font();
         font.setPointSize(5);
         painter->setFont(font);
-        painter->setPen(pen);
+        painter->setPen(QPen(Qt::black));
         painter->drawText(QRect(-50, 50, 100, 10), Qt::AlignCenter, title);
     }
 }
