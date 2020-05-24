@@ -5,6 +5,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QTextItem>
+#include <QGraphicsSceneContextMenuEvent>
 
 Qt::BrushStyle Pentamino::collisionBrushStyle = Qt::DiagCrossPattern;
 Qt::BrushStyle Pentamino::normalBrushStyle = Qt::SolidPattern;
@@ -110,7 +111,7 @@ void Pentamino::focusOutEvent(QFocusEvent *event)
 
 void Pentamino::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-    Q_UNUSED(event)
+    event->accept();
 
     this->currentAngle += 90;
     if (this->currentAngle >= 360) {
@@ -118,6 +119,7 @@ void Pentamino::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     }
 
     this->setRotation(this->currentAngle);
+    emit pentaminoMoved();
 }
 
 void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -162,7 +164,6 @@ QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
 
         return QPointF(xV, yV);
     } else {
-        // @todo: item rotation changed doesn't work
         if (change == ItemPositionHasChanged || change == ItemRotationHasChanged || change == ItemTransformHasChanged) {
             emit pentaminoMoved();
         }
