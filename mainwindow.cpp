@@ -114,7 +114,6 @@ void MainWindow::gameWon()
         Settings::saveGame(this->gameStatus);
         this->updateUi(this->currentGameId, GameStatus::Won);
     }
-    QMessageBox::information(this, "Fin de la partie", "La partie a été gagnée", QMessageBox::Ok);
 }
 
 void MainWindow::startGame(Game::GameId gameId)
