@@ -73,3 +73,9 @@ bin/*
 *.dll
 *.exe
 
+# Debian
+debian/files
+debian/debhelper-build-stamp
+debian/.debhelper/*
+debian/*.substvars
+debian/pentaminos/*
