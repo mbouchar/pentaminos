@@ -392,7 +392,7 @@ Pentamino* Pentamino::pentamino7()
 
 Pentamino* Pentamino::pentamino8()
 {
-    Pentamino *pentamino = new Pentamino(8, QColor(0, 176, 240, 255));
+    Pentamino *pentamino = new Pentamino(8, QColor(0, 176, 240, 255), true);
     pentamino->setTitleColor(Qt::white);
 
     /*  xx
