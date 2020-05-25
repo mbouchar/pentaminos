@@ -18,26 +18,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DESTDIR = bin
 
 SOURCES += \
-    game.cpp \
-    gamestatus.cpp \
-    grid.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    pentamino.cpp \
-    scene.cpp \
-    settings.cpp
+    src/game.cpp \
+    src/gamestatus.cpp \
+    src/grid.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/pentamino.cpp \
+    src/scene.cpp \
+    src/settings.cpp
 
 HEADERS += \
-    game.h \
-    gamestatus.h \
-    grid.h \
-    mainwindow.h \
-    pentamino.h \
-    scene.h \
-    settings.h
+    src/game.h \
+    src/gamestatus.h \
+    src/grid.h \
+    src/mainwindow.h \
+    src/pentamino.h \
+    src/scene.h \
+    src/settings.h
 
 FORMS += \
-    mainwindow.ui
+    src/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
