@@ -127,7 +127,7 @@ void Game::checkStatus()
 
 void Game::showDefaultText()
 {
-    this->gameTitle = "Sélectionnez un pentanimo";
+    this->gameTitle = "Sélectionnez un pentamino";
 }
 
 void Game::resetGame()
@@ -246,6 +246,8 @@ void Game::startGame(GameId gameId)
         default:
             return;
     }
+
+    this->gameTitle = "";
 }
 
 void Game::startPentamino4A()
@@ -256,8 +258,6 @@ void Game::startPentamino4A()
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino8->show();
-
-    this->gameTitle = "Pentanimo 4A";
 }
 
 void Game::startPentamino4B()
@@ -268,8 +268,6 @@ void Game::startPentamino4B()
     this->pentamino3->show();
     this->pentamino7->show();
     this->pentamino9->show();
-
-    this->gameTitle = "Pentanimo 4B";
 }
 
 void Game::startPentamino4C()
@@ -280,8 +278,6 @@ void Game::startPentamino4C()
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino6->show();
-
-    this->gameTitle = "Pentanimo 4C";
 }
 
 void Game::startPentamino4D()
@@ -292,8 +288,6 @@ void Game::startPentamino4D()
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
-
-    this->gameTitle = "Pentanimo 4D";
 }
 
 void Game::startPentamino4E()
@@ -304,8 +298,6 @@ void Game::startPentamino4E()
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino8->show();
-
-    this->gameTitle = "Pentanimo 4E";
 }
 
 void Game::startPentamino4F()
@@ -316,8 +308,6 @@ void Game::startPentamino4F()
     this->pentamino6->show();
     this->pentamino7->show();
     this->pentamino9->show();
-
-    this->gameTitle = "Pentanimo 4F";
 }
 
 void Game::startPentamino4G()
@@ -328,8 +318,6 @@ void Game::startPentamino4G()
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino11->show();
-
-    this->gameTitle = "Pentanimo 4G";
 }
 
 void Game::startPentamino4H()
@@ -340,8 +328,6 @@ void Game::startPentamino4H()
     this->pentamino4->show();
     this->pentamino5->show();
     this->pentamino10->show();
-
-    this->gameTitle = "Pentanimo 4H";
 }
 
 void Game::startPentamino4I()
@@ -352,8 +338,6 @@ void Game::startPentamino4I()
     this->pentamino5->show();
     this->pentamino6->show();
     this->pentamino8->show();
-
-    this->gameTitle = "Pentanimo 4I";
 }
 
 void Game::startPentamino4J()
@@ -364,8 +348,6 @@ void Game::startPentamino4J()
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino10->show();
-
-    this->gameTitle = "Pentanimo 4J";
 }
 
 void Game::startPentamino4K()
@@ -376,8 +358,6 @@ void Game::startPentamino4K()
     this->pentamino4->show();
     this->pentamino6->show();
     this->pentamino7->show();
-
-    this->gameTitle = "Pentanimo 4K";
 }
 
 void Game::startPentamino4L()
@@ -388,8 +368,6 @@ void Game::startPentamino4L()
     this->pentamino3->show();
     this->pentamino5->show();
     this->pentamino7->show();
-
-    this->gameTitle = "Pentanimo 4L";
 }
 
 void Game::startPentamino5A()
@@ -401,8 +379,6 @@ void Game::startPentamino5A()
     this->pentamino5->show();
     this->pentamino7->show();
     this->pentamino8->show();
-
-    this->gameTitle = "Pentanimo 5A";
 }
 
 void Game::startPentamino5B()
@@ -414,8 +390,6 @@ void Game::startPentamino5B()
     this->pentamino7->show();
     this->pentamino8->show();
     this->pentamino9->show();
-
-    this->gameTitle = "Pentanimo 5B";
 }
 
 void Game::startPentamino5C()
@@ -427,8 +401,6 @@ void Game::startPentamino5C()
     this->pentamino5->show();
     this->pentamino6->show();
     this->pentamino9->show();
-
-    this->gameTitle = "Pentanimo 5C";
 }
 
 void Game::startPentamino5D()
@@ -440,8 +412,6 @@ void Game::startPentamino5D()
     this->pentamino7->show();
     this->pentamino9->show();
     this->pentamino10->show();
-
-    this->gameTitle = "Pentanimo 5D";
 }
 
 void Game::startPentamino5E()
@@ -453,8 +423,6 @@ void Game::startPentamino5E()
     this->pentamino6->show();
     this->pentamino8->show();
     this->pentamino11->show();
-
-    this->gameTitle = "Pentanimo 5E";
 }
 
 void Game::startPentamino5F()
@@ -466,8 +434,6 @@ void Game::startPentamino5F()
     this->pentamino7->show();
     this->pentamino9->show();
     this->pentamino12->show();
-
-    this->gameTitle = "Pentanimo 5F";
 }
 
 void Game::startPentamino5G()
@@ -479,8 +445,6 @@ void Game::startPentamino5G()
     this->pentamino4->show();
     this->pentamino6->show();
     this->pentamino11->show();
-
-    this->gameTitle = "Pentanimo 5G";
 }
 
 void Game::startPentamino5H()
@@ -492,8 +456,6 @@ void Game::startPentamino5H()
     this->pentamino5->show();
     this->pentamino9->show();
     this->pentamino10->show();
-
-    this->gameTitle = "Pentanimo 5H";
 }
 
 void Game::startPentamino12()
@@ -512,6 +474,4 @@ void Game::startPentamino12()
     this->pentamino10->show();
     this->pentamino11->show();
     this->pentamino12->show();
-
-    this->gameTitle = "Pentanimo 12";
 }

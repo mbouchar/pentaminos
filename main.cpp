@@ -19,6 +19,8 @@
 #include <QApplication>
 #include <QObject>
 
+// @todo: coordinates are hardcoded all over the place
+// @todo: center grid
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
