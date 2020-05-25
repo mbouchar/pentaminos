@@ -3,13 +3,13 @@ qmake
 make
 
 ## Try locally
-./bin/Pentanimos
+./bin/Pentaminos
 
 ## Install
 sudo make install
 
 ## Play
-/usr/bin/Pentanimos
+/usr/bin/Pentaminos
 
 # Remove
 sudo make uninstall

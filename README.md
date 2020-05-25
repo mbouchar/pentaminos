@@ -1,5 +1,5 @@
-# Pentanimos
+# Pentaminos
 
-Relever les défis Pentanimos
+Relever les défis Pentaminos
 
 ![Fenêtre principale](doc/MainWindow.png)

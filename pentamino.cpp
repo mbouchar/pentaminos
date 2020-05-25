@@ -26,7 +26,7 @@
 Qt::BrushStyle Pentamino::collisionBrushStyle = Qt::DiagCrossPattern;
 Qt::BrushStyle Pentamino::normalBrushStyle = Qt::SolidPattern;
 
-Pentamino::Pentamino(int id, QColor brushColor)
+Pentamino::Pentamino(int id, QColor brushColor, bool canMirror)
 {
     this->pentaminoId = id;
 
@@ -35,17 +35,18 @@ Pentamino::Pentamino(int id, QColor brushColor)
     this->setFlag(QGraphicsItem::ItemIsMovable, true);
     this->setFlag(QGraphicsItem::ItemIsFocusable, true);
 
-    // What is drawed outside of the shape will be hidden
-    //this->setFlag(QGraphicsItem::ItemClipsToShape, true);
-
     // Enable sending position changed events
     this->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+
+    this->canMirror = canMirror;
+    this->isMirrored = false;
 
     this->currentAngle = 0;
     this->currentBrush = nullptr;
     this->titleColor = Qt::black;
 
     this->setBrushColor(brushColor);
+
 }
 
 int Pentamino::id()
@@ -85,10 +86,39 @@ void Pentamino::setCollisionBrushColor(QColor color)
     this->collisionBrush = QBrush(color, this->collisionBrushStyle);
 }
 
+void Pentamino::rotate()
+{
+    this->currentAngle += 90;
+    if (this->currentAngle >= 360) {
+        this->currentAngle = 0;
+    }
+    this->setRotation(this->currentAngle);
+    emit pentaminoMoved();
+}
+
+void Pentamino::mirror()
+{
+    if (this->canMirror) {
+        QTransform transform(this->transform());
+        transform.scale(-1, 1);
+        this->setTransform(transform);
+
+        this->isMirrored = !this->isMirrored;
+        emit pentaminoMoved();
+    }
+}
+
 void Pentamino::reset()
 {
+    // Reset rotation
     this->currentAngle = 0;
     this->setRotation(this->currentAngle);
+
+    // Reset mirroring
+    if (this->isMirrored) {
+        this->mirror();
+    }
+
     this->setCollision(false);
 }
 
@@ -107,12 +137,14 @@ void Pentamino::setCollision(bool collided)
     }
 }
 
+// @todo: add border higlighting
 void Pentamino::focusInEvent(QFocusEvent *event)
 {
     Q_UNUSED(event)
 
     this->setCollision(false);
     this->setZValue(1);
+    this->grabKeyboard();
 }
 
 void Pentamino::focusOutEvent(QFocusEvent *event)
@@ -123,19 +155,39 @@ void Pentamino::focusOutEvent(QFocusEvent *event)
         this->setCollision(true);
     }
     this->setZValue(0);
+    this->ungrabKeyboard();
+}
+
+void Pentamino::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+        case Qt::Key_Escape:
+            this->clearFocus();
+            break;
+        case Qt::Key_Space:
+            this->mirror();
+            break;
+        case Qt::Key_Up:
+            this->setPos(QPointF(this->pos().x(), this->pos().y() - 10));
+            break;
+        case Qt::Key_Down:
+            this->setPos(QPointF(this->pos().x(), this->pos().y() + 10));
+            break;
+        case Qt::Key_Left:
+            this->setPos(QPointF(this->pos().x() - 10, this->pos().y()));
+            break;
+        case Qt::Key_Right:
+            this->setPos(QPointF(this->pos().x() + 10, this->pos().y()));
+            break;
+        default:
+            QGraphicsItem::keyPressEvent(event);
+    }
 }
 
 void Pentamino::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     event->accept();
-
-    this->currentAngle += 90;
-    if (this->currentAngle >= 360) {
-        this->currentAngle = 0;
-    }
-
-    this->setRotation(this->currentAngle);
-    emit pentaminoMoved();
+    this->rotate();
 }
 
 void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -222,7 +274,7 @@ Pentamino* Pentamino::pentamino1()
 
 Pentamino* Pentamino::pentamino2()
 {
-    Pentamino *pentamino = new Pentamino(2, QColor(237, 125, 49, 255));
+    Pentamino *pentamino = new Pentamino(2, QColor(237, 125, 49, 255), true);
 
     /* x
      * x
@@ -241,7 +293,7 @@ Pentamino* Pentamino::pentamino2()
 
 Pentamino* Pentamino::pentamino3()
 {
-    Pentamino *pentamino = new Pentamino(3, QColor(192, 0, 0, 255));
+    Pentamino *pentamino = new Pentamino(3, QColor(192, 0, 0, 255), true);
     pentamino->setTitleColor(Qt::white);
 
     /*  x
@@ -261,7 +313,7 @@ Pentamino* Pentamino::pentamino3()
 
 Pentamino* Pentamino::pentamino4()
 {
-    Pentamino *pentamino = new Pentamino(4, QColor(112, 48, 160, 255));
+    Pentamino *pentamino = new Pentamino(4, QColor(112, 48, 160, 255), true);
     pentamino->setTitleColor(Qt::white);
 
     /*  x
@@ -302,7 +354,7 @@ Pentamino* Pentamino::pentamino5()
 
 Pentamino* Pentamino::pentamino6()
 {
-    Pentamino *pentamino = new Pentamino(6, QColor(255, 0, 255, 255));
+    Pentamino *pentamino = new Pentamino(6, QColor(255, 0, 255, 255), true);
 
     /* xx
      * xx
@@ -341,6 +393,7 @@ Pentamino* Pentamino::pentamino7()
 Pentamino* Pentamino::pentamino8()
 {
     Pentamino *pentamino = new Pentamino(8, QColor(0, 176, 240, 255));
+    pentamino->setTitleColor(Qt::white);
 
     /*  xx
      *  x
@@ -359,7 +412,7 @@ Pentamino* Pentamino::pentamino8()
 
 Pentamino* Pentamino::pentamino9()
 {
-    Pentamino *pentamino = new Pentamino(9, QColor(192, 191, 191, 255));
+    Pentamino *pentamino = new Pentamino(9, QColor(192, 191, 191, 255), true);
 
     /*  x
      * xxx

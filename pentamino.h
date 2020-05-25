@@ -4,6 +4,7 @@
 #include <QGraphicsObject>
 #include <QPainter>
 #include <QBrush>
+#include <QKeyEvent>
 
 class Pentamino : public QGraphicsObject
 {
@@ -36,11 +37,14 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     int type() const override;
 
+    void mirror();
+    void rotate();
+
 signals:
     void pentaminoMoved();
 
 protected:
-    Pentamino(int id, QColor brushColor);
+    Pentamino(int id, QColor brushColor, bool canMirror = false);
 
     void addRectItem(QRect rect);
     void setBrushColor(QColor color);
@@ -51,6 +55,7 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     void focusInEvent(QFocusEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     int pentaminoId;
@@ -62,7 +67,10 @@ private:
     QBrush normalBrush;
     QBrush collisionBrush;
 
+    bool canMirror;
+    bool isMirrored;
     int currentAngle;
+
     QPainterPath path;
     QPainterPath shapePath;
 

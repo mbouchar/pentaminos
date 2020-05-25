@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     this->ui->graphicsView->setMinimumSize(600, 550);
     this->setFixedSize(800, 600);
-    this->setWindowTitle("Pentanimos");
+    this->setWindowTitle("Pentaminos");
 
     /*int sceneWidth = this->ui->graphicsView->width();
     int sceneHeight = this->ui->graphicsView->height();*/
