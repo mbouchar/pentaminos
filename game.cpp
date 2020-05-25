@@ -243,6 +243,8 @@ void Game::startGame(GameId gameId)
         case Pentamino12:
             startPentamino12();
             break;
+        default:
+            return;
     }
 }
 

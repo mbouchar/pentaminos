@@ -55,7 +55,9 @@ protected:
     void closeEvent(QCloseEvent *event) override;
     void setGameStatus(GameStatus *status);
     void updateUi(Game::GameId gameId, GameStatus::Status gameStatus);
-    void updateButton(QPushButton *button, GameStatus::Status gameStatus);
+    void updateUi(Game::GameId gameId, QColor color);
+    void updateButton(QPushButton *button, QColor color);
+    QColor buttonColor(GameStatus::Status gameStatus);
 
 private:
     Ui::MainWindow *ui;

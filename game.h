@@ -13,6 +13,7 @@ class Game : public QObject
 
 public:
     enum GameId {
+        NoGame,
         // Pentamino 4
         Pentamino4A, Pentamino4B, Pentamino4C,
         Pentamino4D, Pentamino4E, Pentamino4F,

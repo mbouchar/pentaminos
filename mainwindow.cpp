@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
 
     this->game = new Game(this->scene);
+    this->currentGameId = Game::NoGame;
 
     // Pentaminos 4
     connect(this->ui->pentamino4A, SIGNAL(clicked()), this, SLOT(startPentamino4A()));
@@ -138,97 +139,117 @@ void MainWindow::startGame(Game::GameId gameId)
     if (this->gameStatus->status(gameId) < GameStatus::Tried) {
         this->gameStatus->setStatus(gameId, GameStatus::Tried);
         Settings::saveGame(this->gameStatus);
-        this->updateUi(gameId, GameStatus::Tried);
+    }
+    // Update button colors
+    if (this->currentGameId != Game::NoGame) {
+        this->updateUi(this->currentGameId, GameStatus::Tried);
     }
     this->currentGameId = gameId;
+    this->updateUi(gameId, Qt::cyan);
+
     this->game->startGame(gameId);
 }
 
-void MainWindow::updateButton(QPushButton *button, GameStatus::Status gameStatus)
+QColor MainWindow::buttonColor(GameStatus::Status gameStatus)
 {
-    QPalette pal = button->palette();
+    QColor color;
     switch (gameStatus) {
         case GameStatus::NeverTried:
-            pal.setColor(QPalette::Button, Qt::red);
+            color = Qt::red;
             break;
         case GameStatus::Tried:
-            pal.setColor(QPalette::Button, Qt::yellow);
+            color = Qt::yellow;
             break;
         case GameStatus::Won:
-            pal.setColor(QPalette::Button, Qt::green);
+            color = Qt::green;
             break;
     }
+
+    return color;
+}
+
+void MainWindow::updateButton(QPushButton *button, QColor color)
+{
+    QPalette pal = button->palette();
+    pal.setColor(QPalette::Button, color);
     button->setAutoFillBackground(true);
     button->setPalette(pal);
     button->update();
 }
 
-void MainWindow::updateUi(Game::GameId gameId, GameStatus::Status status)
+void MainWindow::updateUi(Game::GameId gameId, GameStatus::Status gameStatus)
+{
+    this->updateUi(gameId, this->buttonColor(gameStatus));
+}
+
+void MainWindow::updateUi(Game::GameId gameId, QColor color)
 {
     switch (gameId) {
         case Game::Pentamino4A:
-            this->updateButton(this->ui->pentamino4A, status);
+            this->updateButton(this->ui->pentamino4A, color);
             break;
         case Game::Pentamino4B:
-            this->updateButton(this->ui->pentamino4B, status);
+            this->updateButton(this->ui->pentamino4B, color);
             break;
         case Game::Pentamino4C:
-            this->updateButton(this->ui->pentamino4C, status);
+            this->updateButton(this->ui->pentamino4C, color);
             break;
         case Game::Pentamino4D:
-            this->updateButton(this->ui->pentamino4D, status);
+            this->updateButton(this->ui->pentamino4D, color);
             break;
         case Game::Pentamino4E:
-            this->updateButton(this->ui->pentamino4E, status);
+            this->updateButton(this->ui->pentamino4E, color);
             break;
         case Game::Pentamino4F:
-            this->updateButton(this->ui->pentamino4F, status);
+            this->updateButton(this->ui->pentamino4F, color);
             break;
         case Game::Pentamino4G:
-            this->updateButton(this->ui->pentamino4G, status);
+            this->updateButton(this->ui->pentamino4G, color);
             break;
         case Game::Pentamino4H:
-            this->updateButton(this->ui->pentamino4H, status);
+            this->updateButton(this->ui->pentamino4H, color);
             break;
         case Game::Pentamino4I:
-            this->updateButton(this->ui->pentamino4I, status);
+            this->updateButton(this->ui->pentamino4I, color);
             break;
         case Game::Pentamino4J:
-            this->updateButton(this->ui->pentamino4J, status);
+            this->updateButton(this->ui->pentamino4J, color);
             break;
         case Game::Pentamino4K:
-            this->updateButton(this->ui->pentamino4K, status);
+            this->updateButton(this->ui->pentamino4K, color);
             break;
         case Game::Pentamino4L:
-            this->updateButton(this->ui->pentamino4L, status);
+            this->updateButton(this->ui->pentamino4L, color);
             break;
         case Game::Pentamino5A:
-            this->updateButton(this->ui->pentamino5A, status);
+            this->updateButton(this->ui->pentamino5A, color);
             break;
         case Game::Pentamino5B:
-            this->updateButton(this->ui->pentamino5B, status);
+            this->updateButton(this->ui->pentamino5B, color);
             break;
         case Game::Pentamino5C:
-            this->updateButton(this->ui->pentamino5C, status);
+            this->updateButton(this->ui->pentamino5C, color);
             break;
         case Game::Pentamino5D:
-            this->updateButton(this->ui->pentamino5D, status);
+            this->updateButton(this->ui->pentamino5D, color);
             break;
         case Game::Pentamino5E:
-            this->updateButton(this->ui->pentamino5E, status);
+            this->updateButton(this->ui->pentamino5E, color);
             break;
         case Game::Pentamino5F:
-            this->updateButton(this->ui->pentamino5F, status);
+            this->updateButton(this->ui->pentamino5F, color);
             break;
         case Game::Pentamino5G:
-            this->updateButton(this->ui->pentamino5G, status);
+            this->updateButton(this->ui->pentamino5G, color);
             break;
         case Game::Pentamino5H:
-            this->updateButton(this->ui->pentamino5H, status);
+            this->updateButton(this->ui->pentamino5H, color);
             break;
         case Game::Pentamino12:
-            this->updateButton(this->ui->pentamino12, status);
+            this->updateButton(this->ui->pentamino12, color);
             break;
+        default:
+            return;
     }
 }
 
