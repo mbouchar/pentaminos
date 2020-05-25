@@ -129,8 +129,8 @@ void MainWindow::gameWon()
     if (this->gameStatus->status(this->currentGameId) < GameStatus::Won) {
         this->gameStatus->setStatus(this->currentGameId, GameStatus::Won);
         Settings::saveGame(this->gameStatus);
-        this->updateUi(this->currentGameId, GameStatus::Won);
     }
+    this->updateUi(this->currentGameId, GameStatus::Won);
 }
 
 void MainWindow::startGame(Game::GameId gameId)
@@ -142,7 +142,11 @@ void MainWindow::startGame(Game::GameId gameId)
     }
     // Update button colors
     if (this->currentGameId != Game::NoGame) {
-        this->updateUi(this->currentGameId, GameStatus::Tried);
+        if (this->gameStatus->status(this->currentGameId) < GameStatus::Won) {
+            this->updateUi(this->currentGameId, GameStatus::Tried);
+        } else {
+            this->updateUi(this->currentGameId, GameStatus::Won);
+        }
     }
     this->currentGameId = gameId;
     this->updateUi(gameId, Qt::cyan);
