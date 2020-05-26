@@ -43,7 +43,9 @@ Pentamino::Pentamino(int id, QColor brushColor, bool canMirror)
 
     this->currentAngle = 0;
     this->currentBrush = nullptr;
-    this->titleColor = Qt::black;
+    this->titlePenColor = Qt::black;
+    this->normalPenColor = Qt::black;
+    this->selectedPenColor = Qt::cyan;
 
     this->setBrushColor(brushColor);
 
@@ -137,7 +139,6 @@ void Pentamino::setCollision(bool collided)
     }
 }
 
-// @todo: add border higlighting
 void Pentamino::focusInEvent(QFocusEvent *event)
 {
     Q_UNUSED(event)
@@ -195,13 +196,20 @@ void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
+    // Draw pentamino blocks
+    if (this->hasFocus()) {
+        painter->setPen(this->selectedPenColor);
+    } else {
+        painter->setPen(this->normalPenColor);
+    }
     painter->setBrush(*this->currentBrush);
     painter->drawPath(this->path);
 
+    // Add pentamino number text
     QFont font = painter->font();
     font.setPointSize(5);
     painter->setFont(font);
-    painter->setPen(this->titleColor);
+    painter->setPen(this->titlePenColor);
     painter->drawText(QRect(-5, -5, 10, 10), Qt::AlignCenter, QString::number(this->id()));
 }
 
@@ -250,7 +258,7 @@ void Pentamino::addRectItem(QRect rect)
 
 void Pentamino::setTitleColor(QColor color)
 {
-    this->titleColor = color;
+    this->titlePenColor = color;
 }
 
 Pentamino* Pentamino::pentamino1()

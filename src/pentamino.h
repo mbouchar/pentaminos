@@ -63,6 +63,9 @@ private:
     static Qt::BrushStyle collisionBrushStyle;
     static Qt::BrushStyle normalBrushStyle;
 
+    QColor normalPenColor;
+    QColor selectedPenColor;
+
     QBrush *currentBrush;
     QBrush normalBrush;
     QBrush collisionBrush;
@@ -74,7 +77,7 @@ private:
     QPainterPath path;
     QPainterPath shapePath;
 
-    QColor titleColor;
+    QColor titlePenColor;
 };
 
 #endif // PENTAMINO_H
