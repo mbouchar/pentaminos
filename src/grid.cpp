@@ -19,9 +19,11 @@
 #include <QFont>
 #include <QPen>
 
-Grid::Grid(QSize size)
+Grid::Grid(QSize size, int gridPixelSize, Scene *scene)
 {
+    this->scene = scene;
     this->gridSize = size;
+    this->gridPixelSize = gridPixelSize;
 }
 
 void Grid::setPos(QPoint pos)
@@ -36,18 +38,47 @@ QPoint Grid::pos()
 
 void Grid::draw(QPainter *painter, QPen pen)
 {
+    int width = this->size().width() * this->gridPixelSize;
+    int height = this->size().height() * this->gridPixelSize;
+
     // Draw rectangle
     painter->setPen(pen);
-    painter->drawRect(this->position.x(), this->position.y(), this->size().width() * 10, this->size().height() * 10);
+    painter->drawRect(this->pos().x() - (width / 2), this->pos().y(), width, height);
 
     // Draw horizontal lines
     for (int i = 1; i < this->size().height(); i++) {
-        painter->drawLine(this->position.x(), this->position.y() + i * 10, this->position.x() + this->size().width() * 10, this->position.y() + i * 10);
+        painter->drawLine(this->pos().x() - (width / 2), this->pos().y() + i * this->gridPixelSize, this->pos().x() + (width / 2), this->pos().y() + i * this->gridPixelSize);
     }
     // Draw vertical lines
     for (int i = 1; i < this->size().width(); i++) {
-        painter->drawLine(this->position.x() + i * 10, this->position.y(), this->position.x() + i * 10, this->position.y() + this->size().height() * 10);
+        painter->drawLine(this->pos().x() + i * this->gridPixelSize - (width / 2), this->pos().y(), this->pos().x() + i * this->gridPixelSize - (width / 2), this->pos().y() + height);
     }
+}
+
+bool Grid::isComplete()
+{
+    int gridWith = this->size().width();
+    int gridHeight = this->size().height();
+
+    QTransform transform;
+
+    for (int x = 0; x < gridWith; x++)
+    {
+        for (int y = 0; y < gridHeight; y++)
+        {
+            int xPos = (x * this->gridPixelSize) + this->pos().x() + (this->gridPixelSize / 2) - (gridWith * this->gridPixelSize / 2);
+            int yPos = (y * this->gridPixelSize) + this->pos().y() + (this->gridPixelSize / 2);
+
+            // A case doesn't have any piece
+            if (this->scene->itemAt(xPos, yPos, transform) == 0)
+            {
+                return false;
+            }
+        }
+    }
+
+    // All cases are filled
+    return true;
 }
 
 QSize Grid::size()
@@ -55,17 +86,17 @@ QSize Grid::size()
     return this->gridSize;
 }
 
-Grid* Grid::grid4()
+Grid* Grid::grid4(int gridPixelSize, Scene *scene)
 {
-    return new Grid(QSize(4, 5));
+    return new Grid(QSize(4, 5), gridPixelSize, scene);
 }
 
-Grid* Grid::grid5()
+Grid* Grid::grid5(int gridPixelSize, Scene *scene)
 {
-    return new Grid(QSize(5, 5));
+    return new Grid(QSize(5, 5), gridPixelSize, scene);
 }
 
-Grid* Grid::grid12()
+Grid* Grid::grid12(int gridPixelSize, Scene *scene)
 {
-    return new Grid(QSize(12, 5));
+    return new Grid(QSize(12, 5), gridPixelSize, scene);
 }

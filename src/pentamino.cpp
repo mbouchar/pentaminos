@@ -26,9 +26,11 @@
 Qt::BrushStyle Pentamino::collisionBrushStyle = Qt::DiagCrossPattern;
 Qt::BrushStyle Pentamino::normalBrushStyle = Qt::SolidPattern;
 
-Pentamino::Pentamino(int id, QColor brushColor, bool canMirror)
+Pentamino::Pentamino(int id, QColor brushColor, int gridPixelSize, bool canMirror)
 {
     this->pentaminoId = id;
+
+    this->gridPixelSize = gridPixelSize;
 
     // Enable selection of the item group
     this->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -169,16 +171,16 @@ void Pentamino::keyPressEvent(QKeyEvent *event)
             this->mirror();
             break;
         case Qt::Key_Up:
-            this->setPos(QPointF(this->pos().x(), this->pos().y() - 10));
+            this->setPos(QPointF(this->pos().x(), this->pos().y() - this->gridPixelSize));
             break;
         case Qt::Key_Down:
-            this->setPos(QPointF(this->pos().x(), this->pos().y() + 10));
+            this->setPos(QPointF(this->pos().x(), this->pos().y() + this->gridPixelSize));
             break;
         case Qt::Key_Left:
-            this->setPos(QPointF(this->pos().x() - 10, this->pos().y()));
+            this->setPos(QPointF(this->pos().x() - this->gridPixelSize, this->pos().y()));
             break;
         case Qt::Key_Right:
-            this->setPos(QPointF(this->pos().x() + 10, this->pos().y()));
+            this->setPos(QPointF(this->pos().x() + this->gridPixelSize, this->pos().y()));
             break;
         default:
             QGraphicsItem::keyPressEvent(event);
@@ -210,7 +212,7 @@ void Pentamino::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     font.setPointSize(5);
     painter->setFont(font);
     painter->setPen(this->titlePenColor);
-    painter->drawText(QRect(-5, -5, 10, 10), Qt::AlignCenter, QString::number(this->id()));
+    painter->drawText(QRect(-(this->gridPixelSize / 2), -(this->gridPixelSize / 2), this->gridPixelSize, this->gridPixelSize), Qt::AlignCenter, QString::number(this->id()));
 }
 
 void Pentamino::setPos(const QPointF &pos)
@@ -222,7 +224,7 @@ void Pentamino::setPos(const QPointF &pos)
 QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemPositionChange && scene()) {
-        // value is the new position.
+        // value is the new position. The position is the new position of (0,0)
         QPointF newPos = value.toPointF();
 
         // Check if the pentamino will be out of bounds
@@ -234,7 +236,7 @@ QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
         }
 
         // Snap to grid
-        int gridSize = 10;//customScene->getGridSize();
+        int gridSize = this->gridPixelSize;
         qreal xV = qRound(newPos.x() / gridSize) * gridSize;
         qreal yV = qRound(newPos.y() / gridSize) * gridSize;
 
@@ -248,8 +250,12 @@ QVariant Pentamino::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 }
 
-void Pentamino::addRectItem(QRect rect)
+void Pentamino::addRectItem(int leftX, int topY)
 {
+    // For mirroring / rotation to work correctly, we must offset the position
+    // so that (0,0) is in the middle of a central square
+    QRect rect(leftX - (this->gridPixelSize / 2), topY - (this->gridPixelSize / 2), this->gridPixelSize, this->gridPixelSize);
+
     // Path for drawing
     this->path.addRect(rect);
     // Path for collision detection
@@ -261,238 +267,237 @@ void Pentamino::setTitleColor(QColor color)
     this->titlePenColor = color;
 }
 
-Pentamino* Pentamino::pentamino1()
+Pentamino* Pentamino::pentamino1(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(1, QColor(255, 192, 0, 255));
+    Pentamino *pentamino = new Pentamino(1, QColor(255, 192, 0, 255), gridPixelSize);
 
-    /* x
+    /* 1
+     * 2
      * x
-     * x
-     * x
-     * x
+     * 4
+     * 5
      */
-    pentamino->addRectItem(QRect(-5, -25, 10, 10));
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 15, 10, 10));
+    pentamino->addRectItem(0, -2 * gridPixelSize);
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
+    pentamino->addRectItem(0, 2 * gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino2()
+Pentamino* Pentamino::pentamino2(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(2, QColor(237, 125, 49, 255), true);
+    Pentamino *pentamino = new Pentamino(2, QColor(237, 125, 49, 255), gridPixelSize, true);
 
-    /* x
+    /* 1
+     * 2
      * x
-     * x
-     * xx
+     * 45
      */
-    pentamino->addRectItem(QRect(-5, -25, 10, 10));
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
-    // Right of the last one
-    pentamino->addRectItem(QRect(5, 5, 10, 10));
+    pentamino->addRectItem(0, -2 * gridPixelSize);
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
+    pentamino->addRectItem(gridPixelSize, gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino3()
+Pentamino* Pentamino::pentamino3(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(3, QColor(192, 0, 0, 255), true);
+    Pentamino *pentamino = new Pentamino(3, QColor(192, 0, 0, 255), gridPixelSize, true);
     pentamino->setTitleColor(Qt::white);
 
-    /*  x
-     *  x
-     * xx
-     *  x
+    /*  1
+     *  2
+     * 53
+     *  4
      */
-    pentamino->addRectItem(QRect(-5, -25, 10, 10));
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, -2 * gridPixelSize);
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
     // Left of the third one
-    pentamino->addRectItem(QRect(-15, -5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, 0);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino4()
+Pentamino* Pentamino::pentamino4(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(4, QColor(112, 48, 160, 255), true);
+    Pentamino *pentamino = new Pentamino(4, QColor(112, 48, 160, 255), gridPixelSize, true);
     pentamino->setTitleColor(Qt::white);
 
-    /*  x
-     *  x
-     * xx
-     * x
+    /*  1
+     *  2
+     * 43
+     * 5
      */
-    pentamino->addRectItem(QRect(-5, -25, 10, 10));
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
+    pentamino->addRectItem(0, -2 * gridPixelSize);
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
     // Left of the third one
-    pentamino->addRectItem(QRect(-15, -5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, 0);
     // Below the last one
-    pentamino->addRectItem(QRect(-15, 5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino5()
+Pentamino* Pentamino::pentamino5(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(5, QColor(0, 32, 96, 255));
+    Pentamino *pentamino = new Pentamino(5, QColor(0, 32, 96, 255), gridPixelSize);
     pentamino->setTitleColor(Qt::white);
 
-    /*   x
-     *   x
-     * xxx
+    /*   1
+     *   2
+     * 543
      */
-    pentamino->addRectItem(QRect(-5, -25, 10, 10));
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
+    pentamino->addRectItem(0, -2 * gridPixelSize);
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
     // Left of the last one
-    pentamino->addRectItem(QRect(-15, -5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, 0);
     // Left of the last one
-    pentamino->addRectItem(QRect(-25, -5, 10, 10));
+    pentamino->addRectItem(-2 * gridPixelSize, 0);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino6()
+Pentamino* Pentamino::pentamino6(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(6, QColor(255, 0, 255, 255), true);
+    Pentamino *pentamino = new Pentamino(6, QColor(255, 0, 255, 255), gridPixelSize, true);
 
-    /* xx
-     * xx
-     * x
+    /* 14
+     * 25
+     * 3
      */
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
     // Right of the first one
-    pentamino->addRectItem(QRect(5, -15, 10, 10));
+    pentamino->addRectItem(gridPixelSize, -gridPixelSize);
     // Below the last one
-    pentamino->addRectItem(QRect(5, -5, 10, 10));
+    pentamino->addRectItem(gridPixelSize, 0);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino7()
+Pentamino* Pentamino::pentamino7(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(7, QColor(255, 255, 153, 255));
+    Pentamino *pentamino = new Pentamino(7, QColor(255, 255, 153, 255), gridPixelSize);
 
-    /* xx
-     *  x
-     * xx
+    /* 41
+     *  2
+     * 53
      */
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
     // Left of the first one
-    pentamino->addRectItem(QRect(-15, -15, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, -gridPixelSize);
     // Left of the third one
-    pentamino->addRectItem(QRect(-15, 5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino8()
+Pentamino* Pentamino::pentamino8(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(8, QColor(0, 176, 240, 255), true);
+    Pentamino *pentamino = new Pentamino(8, QColor(0, 176, 240, 255), gridPixelSize, true);
     pentamino->setTitleColor(Qt::white);
 
-    /*  xx
-     *  x
-     * xx
+    /*  14
+     *  2
+     * 53
      */
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
     // Right of the first one
-    pentamino->addRectItem(QRect(5, -15, 10, 10));
+    pentamino->addRectItem(gridPixelSize, -gridPixelSize);
     // Left of the third one
-    pentamino->addRectItem(QRect(-15, 5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino9()
+Pentamino* Pentamino::pentamino9(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(9, QColor(192, 191, 191, 255), true);
+    Pentamino *pentamino = new Pentamino(9, QColor(192, 191, 191, 255), gridPixelSize, true);
 
-    /*  x
-     * xxx
-     * x
+    /*  1
+     * 423
+     * 5
      */
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
     // Right of the second one
-    pentamino->addRectItem(QRect(5, -5, 10, 10));
+    pentamino->addRectItem(gridPixelSize, 0);
     // Left of the second one
-    pentamino->addRectItem(QRect(-15, -5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, 0);
     // Below the last one
-    pentamino->addRectItem(QRect(-15, 5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino10()
+Pentamino* Pentamino::pentamino10(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(10, QColor(255, 255, 255, 255));
+    Pentamino *pentamino = new Pentamino(10, QColor(255, 255, 255, 255), gridPixelSize);
     pentamino->setCollisionBrushColor(QColor(0, 0, 0, 255));
 
-    /* xxx
-     *  x
-     *  x
+    /* 415
+     *  2
+     *  3
      */
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
     // Left of the first one
-    pentamino->addRectItem(QRect(-15, -15, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, -gridPixelSize);
     // Right of the first one
-    pentamino->addRectItem(QRect(5, -15, 10, 10));
+    pentamino->addRectItem(gridPixelSize, -gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino11()
+Pentamino* Pentamino::pentamino11(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(11, QColor(146, 208, 80, 255));
+    Pentamino *pentamino = new Pentamino(11, QColor(146, 208, 80, 255), gridPixelSize);
 
-    /*   x
-     *  xx
-     * xx
+    /*   1
+     *  32
+     * 54
      */
-    pentamino->addRectItem(QRect(5, -15, 10, 10));
-    pentamino->addRectItem(QRect(5, -5, 10, 10));
+    pentamino->addRectItem(gridPixelSize, -gridPixelSize);
+    pentamino->addRectItem(gridPixelSize, 0);
     // Left of the second one
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
+    pentamino->addRectItem(0, 0);
     // Below the last one
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, gridPixelSize);
     // Left of the last one
-    pentamino->addRectItem(QRect(-15, 5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, gridPixelSize);
 
     return pentamino;
 }
 
-Pentamino* Pentamino::pentamino12()
+Pentamino* Pentamino::pentamino12(int gridPixelSize)
 {
-    Pentamino *pentamino = new Pentamino(12, QColor(255, 0, 0, 255));
+    Pentamino *pentamino = new Pentamino(12, QColor(255, 0, 0, 255), gridPixelSize);
 
-    /*  x
-     * xxx
-     *  x
+    /*  1
+     * 425
+     *  3
      */
-    pentamino->addRectItem(QRect(-5, -15, 10, 10));
-    pentamino->addRectItem(QRect(-5, -5, 10, 10));
-    pentamino->addRectItem(QRect(-5, 5, 10, 10));
+    pentamino->addRectItem(0, -gridPixelSize);
+    pentamino->addRectItem(0, 0);
+    pentamino->addRectItem(0, gridPixelSize);
     // Left of the second one
-    pentamino->addRectItem(QRect(-15, -5, 10, 10));
+    pentamino->addRectItem(-gridPixelSize, 0);
     // Right of the second one
-    pentamino->addRectItem(QRect(5, -5, 10, 10));
+    pentamino->addRectItem(gridPixelSize, 0);
 
     return pentamino;
 }

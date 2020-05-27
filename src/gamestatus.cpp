@@ -18,7 +18,6 @@
 
 GameStatus::GameStatus()
 {
-
 }
 
 void GameStatus::setStatus(Game::GameId gameId, GameStatus::Status status)

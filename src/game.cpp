@@ -19,48 +19,40 @@
 
 #include <QObject>
 
-Game::Game(Scene *scene)
+Game::Game(int gridPixelSize, Scene *scene)
 {
+    Q_ASSERT(gridPixelSize > 0);
+
+    this->sceneGridPixelSize = gridPixelSize;
     this->scene = scene;
-    this->scene->setGame(this);
 
     // All all grids to the scene
-    this->grid4 = this->addGrid(Grid::grid4());
-    this->grid5 = this->addGrid(Grid::grid5());
-    this->grid12 = this->addGrid(Grid::grid12());
-
-    // Add text
-    this->showDefaultText();
+    this->grid4 = this->addGrid(Grid::grid4(this->gridPixelSize(), this->scene));
+    this->grid5 = this->addGrid(Grid::grid5(this->gridPixelSize(), this->scene));
+    this->grid12 = this->addGrid(Grid::grid12(this->gridPixelSize(), this->scene));
 
     // Add all standard Pentamino
-    this->pentamino1 = this->addPentamino(Pentamino::pentamino1());
-    this->pentamino2 = this->addPentamino(Pentamino::pentamino2());
-    this->pentamino3 = this->addPentamino(Pentamino::pentamino3());
-    this->pentamino4 = this->addPentamino(Pentamino::pentamino4());
-    this->pentamino5 = this->addPentamino(Pentamino::pentamino5());
-    this->pentamino6 = this->addPentamino(Pentamino::pentamino6());
-    this->pentamino7 = this->addPentamino(Pentamino::pentamino7());
-    this->pentamino8 = this->addPentamino(Pentamino::pentamino8());
-    this->pentamino9 = this->addPentamino(Pentamino::pentamino9());
-    this->pentamino10 = this->addPentamino(Pentamino::pentamino10());
-    this->pentamino11 = this->addPentamino(Pentamino::pentamino11());
-    this->pentamino12 = this->addPentamino(Pentamino::pentamino12());
-
-    this->gameActiveGrid = nullptr;
+    this->pentamino1 = this->addPentamino(Pentamino::pentamino1(this->gridPixelSize()));
+    this->pentamino2 = this->addPentamino(Pentamino::pentamino2(this->gridPixelSize()));
+    this->pentamino3 = this->addPentamino(Pentamino::pentamino3(this->gridPixelSize()));
+    this->pentamino4 = this->addPentamino(Pentamino::pentamino4(this->gridPixelSize()));
+    this->pentamino5 = this->addPentamino(Pentamino::pentamino5(this->gridPixelSize()));
+    this->pentamino6 = this->addPentamino(Pentamino::pentamino6(this->gridPixelSize()));
+    this->pentamino7 = this->addPentamino(Pentamino::pentamino7(this->gridPixelSize()));
+    this->pentamino8 = this->addPentamino(Pentamino::pentamino8(this->gridPixelSize()));
+    this->pentamino9 = this->addPentamino(Pentamino::pentamino9(this->gridPixelSize()));
+    this->pentamino10 = this->addPentamino(Pentamino::pentamino10(this->gridPixelSize()));
+    this->pentamino11 = this->addPentamino(Pentamino::pentamino11(this->gridPixelSize()));
+    this->pentamino12 = this->addPentamino(Pentamino::pentamino12(this->gridPixelSize()));
 
     foreach(Pentamino *pentamino, this->pentaminos) {
         connect(pentamino, SIGNAL(pentaminoMoved()), this, SLOT(checkStatus()));
     }
 }
 
-QString Game::title()
+int Game::gridPixelSize()
 {
-    return this->gameTitle;
-}
-
-Grid* Game::activeGrid()
-{
-    return this->gameActiveGrid;
+    return this->sceneGridPixelSize;
 }
 
 void Game::checkStatus()
@@ -97,64 +89,37 @@ void Game::checkStatus()
     }
 
     // Detect if the game has been won
-    if (!collisionDetected && this->activeGrid() != nullptr)
-    {
-        int gridWith = this->activeGrid()->size().width();
-        int gridHeight = this->activeGrid()->size().height();
-
-        QPoint gridPos = this->activeGrid()->pos();
-        QTransform transform;
-
-        for (int x = 0; x < gridWith; x++)
-        {
-            for (int y = 0; y < gridHeight; y++)
-            {
-                int xPos = (x * 10) + gridPos.x() + 5;
-                int yPos = (y * 10) + gridPos.y() + 5;
-
-                // A case doesn't have any piece
-                if (this->scene->itemAt(xPos, yPos, transform) == 0)
-                {
-                    return;
-                }
-            }
-        }
-
-        // All cases are filled
+    if (!collisionDetected && this->scene->activeGrid() != nullptr && this->scene->activeGrid()->isComplete()) {
         emit gameWon();
     }
 }
 
-void Game::showDefaultText()
-{
-    this->gameTitle = "Sélectionnez un pentamino";
-}
-
 void Game::resetGame()
 {
-    this->pentamino1->setPos(QPoint(-140, -110));
-    this->pentamino2->setPos(QPoint(-120, -110));
-    this->pentamino3->setPos(QPoint(-80, -110));
-    this->pentamino4->setPos(QPoint(-50, -110));
-    this->pentamino5->setPos(QPoint(-10, -110));
-    this->pentamino6->setPos(QPoint(10, -110));
-    this->pentamino7->setPos(QPoint(50, -110));
-    this->pentamino8->setPos(QPoint(80, -110));
-    this->pentamino9->setPos(QPoint(120, -110));
-    this->pentamino10->setPos(QPoint(-130, -60));
-    this->pentamino11->setPos(QPoint(-90, -60));
-    this->pentamino12->setPos(QPoint(-50, -60));
+    int gridPixelSize = this->gridPixelSize();
+
+    // @todo: still hardcoded
+    this->pentamino1->setPos(QPoint(-145, -105));
+    this->pentamino2->setPos(QPoint(-125, -105));
+    this->pentamino3->setPos(QPoint(-85, -105));
+    this->pentamino4->setPos(QPoint(-55, -105));
+    this->pentamino5->setPos(QPoint(-15, -105));
+    this->pentamino6->setPos(QPoint(15, -105));
+    this->pentamino7->setPos(QPoint(55, -105));
+    this->pentamino8->setPos(QPoint(85, -105));
+    this->pentamino9->setPos(QPoint(125, -105));
+    this->pentamino10->setPos(QPoint(-135, -55));
+    this->pentamino11->setPos(QPoint(-95, -55));
+    this->pentamino12->setPos(QPoint(-55, -55));
+
+    this->grid4->setPos(QPoint(-gridPixelSize / 2, -gridPixelSize / 2));
+    this->grid5->setPos(QPoint(-gridPixelSize / 2, -gridPixelSize / 2));
+    this->grid12->setPos(QPoint(-gridPixelSize / 2, -gridPixelSize / 2));
 
     foreach (Pentamino *pentamino, this->pentaminos) {
         pentamino->reset();
         pentamino->hide();
     }
-
-    this->grid4->setPos(QPoint(-5, -5));
-    this->grid5->setPos(QPoint(-5, -5));
-    this->grid12->setPos(QPoint(-5, -5));
-
-    this->showDefaultText();
 
     this->scene->invalidate(this->scene->sceneRect(), QGraphicsScene::BackgroundLayer);
 }
@@ -246,14 +211,12 @@ void Game::startGame(GameId gameId)
         default:
             return;
     }
-
-    this->gameTitle = "";
 }
 
 void Game::startPentamino4A()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino4->show();
     this->pentamino5->show();
@@ -263,7 +226,7 @@ void Game::startPentamino4A()
 void Game::startPentamino4B()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino7->show();
@@ -273,7 +236,7 @@ void Game::startPentamino4B()
 void Game::startPentamino4C()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino5->show();
@@ -283,7 +246,7 @@ void Game::startPentamino4C()
 void Game::startPentamino4D()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino7->show();
@@ -293,7 +256,7 @@ void Game::startPentamino4D()
 void Game::startPentamino4E()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
@@ -303,7 +266,7 @@ void Game::startPentamino4E()
 void Game::startPentamino4F()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino6->show();
     this->pentamino7->show();
@@ -313,7 +276,7 @@ void Game::startPentamino4F()
 void Game::startPentamino4G()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
@@ -323,7 +286,7 @@ void Game::startPentamino4G()
 void Game::startPentamino4H()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino5->show();
@@ -333,7 +296,7 @@ void Game::startPentamino4H()
 void Game::startPentamino4I()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino5->show();
     this->pentamino6->show();
@@ -343,7 +306,7 @@ void Game::startPentamino4I()
 void Game::startPentamino4J()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
@@ -353,7 +316,7 @@ void Game::startPentamino4J()
 void Game::startPentamino4K()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino6->show();
@@ -363,7 +326,7 @@ void Game::startPentamino4K()
 void Game::startPentamino4L()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid4;
+    this->scene->setActiveGrid(this->grid4);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino5->show();
@@ -373,7 +336,7 @@ void Game::startPentamino4L()
 void Game::startPentamino5A()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino2->show();
     this->pentamino4->show();
     this->pentamino5->show();
@@ -384,7 +347,7 @@ void Game::startPentamino5A()
 void Game::startPentamino5B()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino7->show();
@@ -395,7 +358,7 @@ void Game::startPentamino5B()
 void Game::startPentamino5C()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino5->show();
@@ -406,7 +369,7 @@ void Game::startPentamino5C()
 void Game::startPentamino5D()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino3->show();
     this->pentamino6->show();
     this->pentamino7->show();
@@ -417,7 +380,7 @@ void Game::startPentamino5D()
 void Game::startPentamino5E()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino6->show();
@@ -428,7 +391,7 @@ void Game::startPentamino5E()
 void Game::startPentamino5F()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino2->show();
     this->pentamino6->show();
     this->pentamino7->show();
@@ -439,7 +402,7 @@ void Game::startPentamino5F()
 void Game::startPentamino5G()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino2->show();
     this->pentamino3->show();
     this->pentamino4->show();
@@ -450,7 +413,7 @@ void Game::startPentamino5G()
 void Game::startPentamino5H()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid5;
+    this->scene->setActiveGrid(this->grid5);
     this->pentamino3->show();
     this->pentamino4->show();
     this->pentamino5->show();
@@ -461,7 +424,7 @@ void Game::startPentamino5H()
 void Game::startPentamino12()
 {
     this->resetGame();
-    this->gameActiveGrid = this->grid12;
+    this->scene->setActiveGrid(this->grid12);
     this->pentamino1->show();
     this->pentamino2->show();
     this->pentamino3->show();

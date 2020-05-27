@@ -3,10 +3,10 @@
 
 #include "pentamino.h"
 #include "grid.h"
+#include "scene.h"
 
 #include <QObject>
 
-class Scene;
 class Game : public QObject
 {
     Q_OBJECT
@@ -26,10 +26,11 @@ public:
         // Pentamino 12
         Pentamino12
     };
-    Game(Scene *scene);
+    Game(int gridPixelSize, Scene *scene);
 
     QString title();
     Grid* activeGrid();
+    int gridPixelSize();
 
 public slots:
     void startGame(GameId gameId);
@@ -42,7 +43,6 @@ signals:
 
 protected:
     void resetGame();
-    void showDefaultText();
 
     // Pentaminos 4
     void startPentamino4A();
@@ -76,8 +76,6 @@ private:
     Grid *addGrid(Grid *grid, QPoint pos = QPoint(0, 0));
 
     Scene *scene;
-    QString gameTitle;
-
     QList<Pentamino*> pentaminos;
 
     Pentamino *pentamino1;
@@ -97,7 +95,7 @@ private:
     Grid *grid5;
     Grid *grid12;
 
-    Grid *gameActiveGrid;
+    int sceneGridPixelSize;
 };
 
 #endif // GAME_H

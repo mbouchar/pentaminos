@@ -63,7 +63,7 @@ private:
     Ui::MainWindow *ui;
     Scene *scene;
 
-    static int gridSize;
+    static int defaultGridPixelSize;
     static int scale;
 
     Game *game;

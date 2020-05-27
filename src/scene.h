@@ -2,19 +2,23 @@
 #define SCENE_H
 
 #include <QGraphicsScene>
-#include "game.h"
 
+class Grid;
 class Scene : public QGraphicsScene
 {
 public:
-    Scene(const QRectF &sceneRect, int gridSize, QObject *parent = 0);
-    void setGame(Game *game);
+    Scene(const QRectF &sceneRect, QObject *parent = 0);
+
+    Grid* activeGrid();
+    void setActiveGrid(Grid *grid);
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 private:
-    Game *game;
+    Grid *gameActiveGrid;
+
+    static QString defaultText;
 };
 
 #endif // SCENE_H

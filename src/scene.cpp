@@ -15,42 +15,41 @@
  */
 
 #include "scene.h"
+#include "grid.h"
 #include <QPainter>
 
-Scene::Scene(const QRectF &sceneRect, int gridSize, QObject *parent) :
+QString Scene::defaultText = "Sélectionnez un pentamino";
+
+Scene::Scene(const QRectF &sceneRect, QObject *parent) :
     QGraphicsScene(sceneRect, parent)
 {
-    Q_ASSERT(gridSize > 0);
-    this->game = nullptr;
+    this->gameActiveGrid = nullptr;
 
     this->setBackgroundBrush(Qt::white);
 }
 
-void Scene::setGame(Game *game)
+Grid* Scene::activeGrid()
 {
-    this->game = game;
+    return this->gameActiveGrid;
+}
+
+void Scene::setActiveGrid(Grid *grid)
+{
+    this->gameActiveGrid = grid;
 }
 
 void Scene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-    if (this->game != nullptr)
-    {
-        Grid *grid = this->game->activeGrid();
-        if (grid != nullptr)
-        {
-            grid->draw(painter, QPen(Qt::gray));
-        }
-    }
-
-    // Draw title
-    QString title = this->game->title();
-    if (!title.isEmpty()) {
+    if (this->activeGrid() != nullptr) {
+        this->activeGrid()->draw(painter, QPen(Qt::gray));
+    } else {
+        // Draw default text
         QFont font = painter->font();
         font.setPointSize(5);
         painter->setFont(font);
         painter->setPen(QPen(Qt::black));
-        painter->drawText(QRect(-50, 50, 100, 10), Qt::AlignCenter, title);
+        painter->drawText(QRect(-50, 50, 100, 10), Qt::AlignCenter, Scene::defaultText);
     }
 }

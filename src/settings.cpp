@@ -20,7 +20,6 @@
 
 Settings::Settings()
 {
-
 }
 
 QSettings* Settings::settings()

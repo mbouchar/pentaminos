@@ -24,36 +24,35 @@
 #include "settings.h"
 #include "scene.h"
 
-int MainWindow::gridSize = 10;
 // Scale 2x
 int MainWindow::scale = 2;
+int MainWindow::defaultGridPixelSize = 10;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    this->ui->graphicsView->setMinimumSize(600, 550);
-    this->setFixedSize(800, 600);
     this->setWindowTitle("Pentaminos");
 
+    // @todo: still hardcoded
+    this->setFixedSize(800, 600);
+    this->ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    this->ui->graphicsView->setMinimumSize(600, 550);
     /*int sceneWidth = this->ui->graphicsView->width();
     int sceneHeight = this->ui->graphicsView->height();*/
     int sceneWidth = this->ui->graphicsView->rect().width();
     int sceneHeight = this->ui->graphicsView->rect().height();
-
-    this->scene = new Scene(QRect(-(sceneWidth / 2) / this->scale, -(sceneHeight / 2) / this->scale, sceneWidth / this->scale, (sceneWidth - 50) / this->scale), this->gridSize, this);
+    this->scene = new Scene(QRect(-(sceneWidth / 2) / this->scale, -(sceneHeight / 2) / this->scale, sceneWidth / this->scale, (sceneWidth - 50) / this->scale), this);
     this->ui->graphicsView->setScene(this->scene);
 
     // Scale the view
     QTransform transform;
     this->ui->graphicsView->setTransform(transform.scale(this->scale, this->scale));
-    this->ui->graphicsView->centerOn(0, 0);
     // Beautify the scene
     this->ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
 
-    this->game = new Game(this->scene);
+    this->game = new Game(defaultGridPixelSize, this->scene);
     this->currentGameId = Game::NoGame;
 
     // Pentaminos 4
@@ -152,6 +151,10 @@ void MainWindow::startGame(Game::GameId gameId)
     this->updateUi(gameId, Qt::cyan);
 
     this->game->startGame(gameId);
+
+    // Reset center
+    // @todo: doesn't work because the scene is too small
+    this->ui->graphicsView->centerOn(-defaultGridPixelSize, -defaultGridPixelSize);
 }
 
 QColor MainWindow::buttonColor(GameStatus::Status gameStatus)

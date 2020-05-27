@@ -15,18 +15,18 @@ public:
 
     int id();
 
-    static Pentamino* pentamino1();
-    static Pentamino* pentamino2();
-    static Pentamino* pentamino3();
-    static Pentamino* pentamino4();
-    static Pentamino* pentamino5();
-    static Pentamino* pentamino6();
-    static Pentamino* pentamino7();
-    static Pentamino* pentamino8();
-    static Pentamino* pentamino9();
-    static Pentamino* pentamino10();
-    static Pentamino* pentamino11();
-    static Pentamino* pentamino12();
+    static Pentamino* pentamino1(int gridPixelSize);
+    static Pentamino* pentamino2(int gridPixelSize);
+    static Pentamino* pentamino3(int gridPixelSize);
+    static Pentamino* pentamino4(int gridPixelSize);
+    static Pentamino* pentamino5(int gridPixelSize);
+    static Pentamino* pentamino6(int gridPixelSize);
+    static Pentamino* pentamino7(int gridPixelSize);
+    static Pentamino* pentamino8(int gridPixelSize);
+    static Pentamino* pentamino9(int gridPixelSize);
+    static Pentamino* pentamino10(int gridPixelSize);
+    static Pentamino* pentamino11(int gridPixelSize);
+    static Pentamino* pentamino12(int gridPixelSize);
 
     void reset();
     void setCollision(bool collided);
@@ -44,9 +44,9 @@ signals:
     void pentaminoMoved();
 
 protected:
-    Pentamino(int id, QColor brushColor, bool canMirror = false);
+    Pentamino(int id, QColor brushColor, int gridPixelSize, bool canMirror = false);
 
-    void addRectItem(QRect rect);
+    void addRectItem(int leftX, int topY);
     void setBrushColor(QColor color);
     void setCollisionBrushColor(QColor color);
     void setTitleColor(QColor color);
@@ -59,6 +59,8 @@ protected:
 
 private:
     int pentaminoId;
+
+    int gridPixelSize;
 
     static Qt::BrushStyle collisionBrushStyle;
     static Qt::BrushStyle normalBrushStyle;
